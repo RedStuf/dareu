@@ -16,7 +16,7 @@ import com.phonezilla.dareu.schermen.fragments.Groups;
 import com.phonezilla.dareu.schermen.fragments.Settings;
 
 
-public class MainActivity extends FragmentActivity implements ActionBar.TabListener{
+public class MainActivity extends FragmentActivity {
 
     ActionBar actionbar;
     ViewPager pager;
@@ -38,7 +38,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
             @Override
             public void onPageSelected(int position) {
-                actionbar.setSelectedNavigationItem(position);
+                //actionbar.setSelectedNavigationItem(position);
             }
 
             @Override
@@ -46,7 +46,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
             }
         });
-        actionbar=getActionBar();
+        /*actionbar=getActionBar();
         actionbar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
         ActionBar.Tab tab1= actionbar.newTab();
@@ -65,9 +65,9 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         actionbar.addTab(tab1);
         actionbar.addTab(tab2);
         actionbar.addTab(tab3);
-        actionbar.addTab(tab4);
+        actionbar.addTab(tab4);*/
     }
-
+/*
     @Override
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
         pager.setCurrentItem(tab.getPosition());
@@ -81,7 +81,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     @Override
     public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
 
-    }
+    }*/
 }
 
 class Adapter extends FragmentPagerAdapter {

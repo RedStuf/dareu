@@ -18,6 +18,8 @@ public class Beginscherm extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_begin);
+
+        getActionBar().hide();
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
