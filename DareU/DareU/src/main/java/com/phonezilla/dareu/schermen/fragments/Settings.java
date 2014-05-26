@@ -14,10 +14,10 @@ import com.phonezilla.dareu.R;
  * A simple {@link android.support.v4.app.Fragment} subclass.
  *
  */
-public class More extends Fragment {
+public class Settings extends Fragment {
 
 
-    public More() {
+    public Settings() {
         // Required empty public constructor
     }
 
@@ -26,7 +26,7 @@ public class More extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_more, container, false);
+        return inflater.inflate(R.layout.fragment_settings, container, false);
     }
 
 
