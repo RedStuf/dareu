@@ -1,26 +1,24 @@
-package com.phonezilla.dareu.schermen;
+package com.phonezilla.dareu.schermen.grouppackage;
 
 import android.app.ActionBar;
-import android.app.FragmentTransaction;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.view.View;
 
 import com.phonezilla.dareu.R;
 import com.phonezilla.dareu.schermen.fragments.Challenges;
 import com.phonezilla.dareu.schermen.fragments.Friends;
 import com.phonezilla.dareu.schermen.fragments.Groups;
 import com.phonezilla.dareu.schermen.fragments.Settings;
-import com.phonezilla.dareu.schermen.grouppackage.Group;
+import com.phonezilla.dareu.schermen.grouppackage.fragments.Accepted;
+import com.phonezilla.dareu.schermen.grouppackage.fragments.Completed;
+import com.phonezilla.dareu.schermen.grouppackage.fragments.Pending;
 
 
-public class MainActivity extends FragmentActivity implements View.OnClickListener {
+public class Group extends FragmentActivity {
 
     ActionBar actionbar;
     ViewPager pager;
@@ -71,12 +69,6 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         actionbar.addTab(tab3);
         actionbar.addTab(tab4);*/
     }
-
-    @Override
-    public void onClick(View view) {
-        Intent intent = new Intent(this,Group.class);
-        startActivity(intent);
-    }
 /*
     @Override
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
@@ -106,25 +98,21 @@ class Adapter extends FragmentPagerAdapter {
         Fragment fragment = null;
         if(position == 0)
         {
-            fragment = new Groups();
+            fragment = new Accepted();
         }
         if(position == 1)
         {
-            fragment = new Challenges();
+            fragment = new Pending();
         }
         if(position == 2)
         {
-            fragment = new Friends();
-        }
-        if(position == 3)
-        {
-            fragment = new Settings();
+            fragment = new Completed();
         }
         return fragment;
     }
 
     @Override
     public int getCount() {
-        return 4;
+        return 3;
     }
 }
