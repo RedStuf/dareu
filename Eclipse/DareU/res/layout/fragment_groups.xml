@@ -21,16 +21,19 @@
             android:textSize="50dp"/>
 
     </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context="com.phonezilla.dareu.schermen.fragments.Challenges"
-        android:orientation="vertical"
-        android:id="@+id/grouplayout"
-    >
-
-
-    </LinearLayout>
-
+    <ScrollView 
+ 	 	android:layout_width="match_parent"
+  		android:layout_height="match_parent">>
+	    <LinearLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        tools:context="com.phonezilla.dareu.schermen.fragments.Challenges"
+	        android:orientation="vertical"
+	        android:id="@+id/grouplayout"
+	    >
+	
+	
+	    </LinearLayout>
+	</ScrollView>
 
 </LinearLayout>

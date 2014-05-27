@@ -37,17 +37,13 @@ public class Accepted extends Fragment {
         if (id == 1) {
             Button button = new Button(getActivity());
             button.setText("mooie challenge");
-            button.setMinimumHeight(150);
-            button.setMinimumWidth(150);
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(getActivity(), Group.class);
-                    intent.putExtra("groupid", 2);
-                    startActivity(intent);
                 }
             });
             LinearLayout layout = (LinearLayout) view.findViewById(R.id.acceptedchallenges);
+            button.setWidth(layout.getWidth());
 
             Log.d("layout", layout + "");
             if (layout != null) {

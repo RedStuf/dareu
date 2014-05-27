@@ -35,7 +35,10 @@ public class Groups extends Fragment {
         // Inflate the layout for this fragment
 
         view = inflater.inflate(R.layout.fragment_groups, container, false);
-        addGroup("hoi",1);
+        for(int i=0;i<15;i++)
+        {
+        	addGroup("hoi"+i,1);
+        }
         return view;
     }
     public void addGroup(String name,int id)
@@ -43,8 +46,6 @@ public class Groups extends Fragment {
         tempid = id;
         Button button = new Button(getActivity());
         button.setText(name);
-        button.setMinimumHeight(150);
-        button.setMinimumWidth(150);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -55,6 +56,7 @@ public class Groups extends Fragment {
             }
         });
         LinearLayout layout = (LinearLayout) view.findViewById(R.id.grouplayout);
+        button.setWidth(layout.getWidth());
         if(layout != null)
             layout.addView(button);
     }
