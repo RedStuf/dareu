@@ -1,7 +1,7 @@
 package com.phonezilla.dareu.schermen;
 
 import android.app.ActionBar;
-import android.app.FragmentTransaction;
+import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,7 +10,11 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 
 import com.phonezilla.dareu.R;
 import com.phonezilla.dareu.schermen.fragments.Challenges;
@@ -19,57 +23,65 @@ import com.phonezilla.dareu.schermen.fragments.Groups;
 import com.phonezilla.dareu.schermen.fragments.Settings;
 import com.phonezilla.dareu.schermen.grouppackage.Group;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class MainActivity extends FragmentActivity implements View.OnClickListener {
 
-    ActionBar actionbar;
-    ViewPager pager;
+    private ViewPager pager;
+    public static List groups = new ArrayList();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         pager = (ViewPager) findViewById(R.id.pager);
-        pager.setAdapter(new Adapter(getSupportFragmentManager()));
+        pager.setAdapter(new Adapter(this,getSupportFragmentManager()));
 
-        pager.setOnPageChangeListener(new ViewPager.OnPageChangeListener()
-        {
 
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.mainmenu, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.newgroup:
+                AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
-            }
+                alert.setTitle("Maak een groep");
+                alert.setMessage("Voer een groepsnaam in");
 
-            @Override
-            public void onPageSelected(int position) {
-                //actionbar.setSelectedNavigationItem(position);
-            }
+// Set an EditText view to get user input
+                final EditText input = new EditText(this);
+                alert.setView(input);
 
-            @Override
-            public void onPageScrollStateChanged(int state) {
+                alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        int id = 1;
+                        String value = input.getText().toString();
+                        groups.add(new Group(value,id));
 
-            }
-        });
-        /*actionbar=getActionBar();
-        actionbar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
-        ActionBar.Tab tab1= actionbar.newTab();
-        tab1.setText("Groups");
-        tab1.setTabListener(this);
-        ActionBar.Tab tab2= actionbar.newTab();
-        tab2.setText("Challenges");
-        tab2.setTabListener(this);
-        ActionBar.Tab tab3= actionbar.newTab();
-        tab3.setText("Friends");
-        tab3.setTabListener(this);
-        ActionBar.Tab tab4= actionbar.newTab();
-        tab4.setText("Settings");
-        tab4.setTabListener(this);
+                    }
+                });
 
-        actionbar.addTab(tab1);
-        actionbar.addTab(tab2);
-        actionbar.addTab(tab3);
-        actionbar.addTab(tab4);*/
+                alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        // Canceled.
+                    }
+                });
+
+                alert.show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
@@ -77,28 +89,15 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         Intent intent = new Intent(this,Group.class);
         startActivity(intent);
     }
-/*
-    @Override
-    public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-        pager.setCurrentItem(tab.getPosition());
-    }
-
-    @Override
-    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-
-    }
-
-    @Override
-    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-
-    }*/
 }
 
 class Adapter extends FragmentPagerAdapter {
 
+    Object x;
+    public Adapter(Object x ,FragmentManager fm) {
 
-    public Adapter(FragmentManager fm) {
         super(fm);
+        this.x = x;
     }
 
     @Override

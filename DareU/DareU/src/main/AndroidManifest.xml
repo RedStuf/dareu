@@ -18,7 +18,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".schermen.MainActivity"
+        android:name=".schermen.MainActivity"
+        android:label="@string/app_name" >
+    </activity>
+        <activity
+            android:name=".schermen.grouppackage.Group"
             android:label="@string/app_name" >
         </activity>
     </application>

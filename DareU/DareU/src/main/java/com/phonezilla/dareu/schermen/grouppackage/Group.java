@@ -22,7 +22,10 @@ public class Group extends FragmentActivity {
 
     ActionBar actionbar;
     ViewPager pager;
+    public Group(String value,int id)
+    {
 
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
