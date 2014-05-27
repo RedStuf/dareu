@@ -22,7 +22,7 @@ public class Group extends FragmentActivity {
 
     ActionBar actionbar;
     ViewPager pager;
-    public Group(String value,int id)
+    public Group()
     {
 
     }

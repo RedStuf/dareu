@@ -65,7 +65,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                     public void onClick(DialogInterface dialog, int whichButton) {
                         int id = 1;
                         String value = input.getText().toString();
-                        groups.add(new Group(value,id));
+                        groups.add(new Group());
 
 
                     }

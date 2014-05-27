@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +21,7 @@ import com.phonezilla.dareu.schermen.grouppackage.Group;
  *
  */
 public class Groups extends Fragment {
-
+    int tempid;
     static View view = null;
     public Groups() {
         // Required empty public constructor
@@ -34,12 +35,12 @@ public class Groups extends Fragment {
         // Inflate the layout for this fragment
 
         view = inflater.inflate(R.layout.fragment_groups, container, false);
-        addGroup("hoi");
+        addGroup("hoi",1);
         return view;
     }
-    public void addGroup(String name)
+    public void addGroup(String name,int id)
     {
-
+        tempid = id;
         Button button = new Button(getActivity());
         button.setText(name);
         button.setMinimumHeight(150);
@@ -48,6 +49,8 @@ public class Groups extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(),Group.class);
+                Log.d("groupid",tempid+"");
+                intent.putExtra("groupid",tempid);
                 startActivity(intent);
             }
         });
