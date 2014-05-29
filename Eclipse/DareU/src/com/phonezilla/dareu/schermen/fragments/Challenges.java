@@ -1,7 +1,11 @@
 package com.phonezilla.dareu.schermen.fragments;
 
-import android.app.Activity;
-import android.net.Uri;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.LinearGradient;
+import android.graphics.Paint;
+import android.graphics.Shader;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -21,9 +25,8 @@ public class Challenges extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+        
         return inflater.inflate(R.layout.fragment_challenges, container, false);
     }
-
 
 }
