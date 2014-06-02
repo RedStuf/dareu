@@ -1,17 +1,15 @@
 package com.phonezilla.dareu;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Handler;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.os.Handler;
 
 import com.phonezilla.dareu.schermen.MainActivity;
 
 
-public class Beginscherm extends ActionBarActivity {
+public class Beginscherm extends Activity {
 
     Context context = this;
     @Override

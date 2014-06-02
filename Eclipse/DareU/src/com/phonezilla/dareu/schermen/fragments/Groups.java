@@ -2,16 +2,19 @@ package com.phonezilla.dareu.schermen.fragments;
 
 
 
-import android.content.Context;
+import java.util.Random;
+
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.phonezilla.dareu.R;
 import com.phonezilla.dareu.schermen.grouppackage.Group;
@@ -44,9 +47,21 @@ public class Groups extends Fragment {
     public void addGroup(String name,int id)
     {
         tempid = id;
-        Button button = new Button(getActivity());
-        button.setText(name);
-        button.setOnClickListener(new View.OnClickListener() {
+        LinearLayout ll = new LinearLayout(getActivity());
+        TextView t1 = new TextView(getActivity());
+        TextView t2 = new TextView(getActivity());
+        ImageView image = new ImageView(getActivity());
+        ll.setWeightSum(1);
+        Random r = new Random();
+        int color = Color.argb(255, r.nextInt(256), r.nextInt(256), r.nextInt(256));   
+        ll.setBackgroundColor(color);
+        ll.setMinimumHeight(100);
+        t1.setText(name);
+        t2.setText("description");
+        ll.addView(image);
+        ll.addView(t1);
+        ll.addView(t2);
+        ll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(),Group.class);
@@ -56,9 +71,9 @@ public class Groups extends Fragment {
             }
         });
         LinearLayout layout = (LinearLayout) view.findViewById(R.id.grouplayout);
-        button.setWidth(layout.getWidth());
+        ll.setMinimumWidth(layout.getWidth());
         if(layout != null)
-            layout.addView(button);
+            layout.addView(ll);
     }
    }
 

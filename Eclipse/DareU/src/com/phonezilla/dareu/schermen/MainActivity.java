@@ -91,6 +91,9 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     }
 }
 
+/*
+ * dit is de adapter om pagina's te swipen
+ */
 class Adapter extends FragmentPagerAdapter {
 
     Object x;
