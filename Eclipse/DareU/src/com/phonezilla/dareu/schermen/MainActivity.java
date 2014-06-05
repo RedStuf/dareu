@@ -21,7 +21,7 @@ import com.phonezilla.dareu.schermen.fragments.Challenges;
 import com.phonezilla.dareu.schermen.fragments.Friends;
 import com.phonezilla.dareu.schermen.fragments.Groups;
 import com.phonezilla.dareu.schermen.fragments.Settings;
-import com.phonezilla.dareu.schermen.grouppackage.Group;
+import com.phonezilla.dareu.schermen.grouppackage.GroupPage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,8 +38,6 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         setContentView(R.layout.activity_main);
         pager = (ViewPager) findViewById(R.id.pager);
         pager.setAdapter(new Adapter(this,getSupportFragmentManager()));
-
-
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -65,9 +63,12 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                     public void onClick(DialogInterface dialog, int whichButton) {
                         int id = 1;
                         String value = input.getText().toString();
-                        groups.add(new Group());
-
-
+                        /* hier moet de groep aangemaakt worden in de database 
+                         * vervolgens kan hij opgehaald worden 
+                         * door middel van een refresh
+                         */
+                        
+                        groups.add(new Groups());
                     }
                 });
 
@@ -86,7 +87,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
     @Override
     public void onClick(View view) {
-        Intent intent = new Intent(this,Group.class);
+        Intent intent = new Intent(this,GroupPage.class);
         startActivity(intent);
     }
 }
