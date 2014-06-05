@@ -1,11 +1,5 @@
 package com.phonezilla.dareu.schermen.fragments;
 
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.LinearGradient;
-import android.graphics.Paint;
-import android.graphics.Shader;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;

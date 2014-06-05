@@ -1,8 +1,9 @@
 package com.phonezilla.dareu.schermen.grouppackage.fragments;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,13 +11,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.phonezilla.dareu.R;
-import com.phonezilla.dareu.schermen.grouppackage.GroupPage;
 
 public class Accepted extends Fragment {
 
@@ -35,15 +37,40 @@ public class Accepted extends Fragment {
         // Inflate the layout for this fragment
 
         view = inflater.inflate(R.layout.fragment_accepted, container, false);
-        addChallenge("challenge name");
-        addChallenge("EET EEN AAP");
-        addChallenge("Spring van een gebouw");
+        getChallenges();
         return view;
     }
+    private void getChallenges()
+    {
+    	ParseQuery<ParseObject> query = ParseQuery.getQuery("Groups");
+        
+  	  // Run the query  
+  	  query.findInBackground(new FindCallback<ParseObject>() {
+  	 
+  	    @Override
+  	    public void done(List<ParseObject> groupList,
+  	        ParseException e) {
+  	      if (e == null) {
+  	        // If there are results, update the list of posts
+  	        // and notify the adapter
+  	        //groups.clear();
+	        	
+  	        for (ParseObject group : groupList) {
+  	        	addChallenge(group.getString("GroupName"),group.getString("ObjectId"));
+  	        	Log.d("groep",group.getString("GroupName")+" is toegevoegd");
+  	        }
+  	 
+  	        //((ArrayAdapter<String>)ListView.getAdapter()).notifyDataSetChanged();
+  	      } else {
+  	        Log.d("Post retrieval", "Error: " + e.getMessage());
+  	      }
+	        	Log.d("groep",Arrays.toString(groupList.toArray())+" is toegevoegd");
+  	        //adapter.notifyDataSetChanged();;
+  	    }            
+  	  });
+    }
 
-    private void addChallenge(String name) {
-        int id = getActivity().getIntent().getExtras().getInt("groupid");
-        if (id == 1) {
+    private void addChallenge(String name,String id) {
             
             LinearLayout ll = new LinearLayout(getActivity());
             
@@ -71,7 +98,7 @@ public class Accepted extends Fragment {
             if(layout != null)
                 layout.addView(ll);
         }
-    }
+    
 }
 
 

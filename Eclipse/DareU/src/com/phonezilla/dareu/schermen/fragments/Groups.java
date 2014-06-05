@@ -2,21 +2,31 @@ package com.phonezilla.dareu.schermen.fragments;
 
 
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.phonezilla.dareu.R;
 import com.phonezilla.dareu.schermen.grouppackage.GroupPage;
 
@@ -25,11 +35,14 @@ import com.phonezilla.dareu.schermen.grouppackage.GroupPage;
  *
  */
 
-public class Groups extends Fragment {
-    int tempid;
+public class Groups extends Fragment implements ListView.OnItemClickListener {
+    String tempid;
     private Random r = new Random();
     private final int GROUPLAYOUTHEIGHT =100;
     static View view = null;
+    private ArrayList<String> groups;
+    ListView ListView;
+    
     public Groups() {
         // Required empty public constructor
     }
@@ -42,17 +55,49 @@ public class Groups extends Fragment {
         // Inflate the layout for this fragment
 
         view = inflater.inflate(R.layout.fragment_groups, container, false);
+        groups = new ArrayList<String>();
+        /*ListView = (ListView) view.findViewById(R.id.listView1);
+        
+
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
+				android.R.layout.simple_list_item_1, groups);
+        
+		ListView.setAdapter(adapter);
+		ListView.setOnItemClickListener(this);*/
         addGroup();
         return view;
     }
     public void addGroup()
     {
-    	for(int i=0;i<15;i++)
-        {
-        	makeGroup("hoi"+i,1);
-        }
+    	ParseQuery<ParseObject> query = ParseQuery.getQuery("Groups");
+             
+    	  // Run the query  
+    	  query.findInBackground(new FindCallback<ParseObject>() {
+    	 
+    	    @Override
+    	    public void done(List<ParseObject> groupList,
+    	        ParseException e) {
+    	      if (e == null) {
+    	        // If there are results, update the list of posts
+    	        // and notify the adapter
+    	        //groups.clear();
+	        	
+    	        for (ParseObject group : groupList) {
+    	        	groups.add(group.getString("GroupName"));
+    	        	makeGroup(group.getString("GroupName"),group.getString("ObjectId"));
+    	        	Log.d("groep",group.getString("GroupName")+" is toegevoegd");
+    	        }
+    	 
+    	        //((ArrayAdapter<String>)ListView.getAdapter()).notifyDataSetChanged();
+    	      } else {
+    	        Log.d("Post retrieval", "Error: " + e.getMessage());
+    	      }
+	        	Log.d("groep",Arrays.toString(groupList.toArray())+" is toegevoegd");
+    	        //adapter.notifyDataSetChanged();;
+    	    }            
+    	  });
     }
-    public void makeGroup(String name,int id)
+    public void makeGroup(String name,String id)
     {
         tempid = id;
         
@@ -88,10 +133,14 @@ public class Groups extends Fragment {
         ll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(),GroupPage.class);
+            	/*
+            	 * 
+            	 */
+            	Intent intent = new Intent(getActivity(),GroupPage.class);
                 Log.d("groupid",tempid+"");
                 intent.putExtra("groupid",tempid);
                 startActivity(intent);
+                
             }
         });
         LinearLayout layout = (LinearLayout) view.findViewById(R.id.grouplayout);
@@ -99,5 +148,17 @@ public class Groups extends Fragment {
         if(layout != null)
             layout.addView(ll);
     }
+
+
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position,
+			long id) {
+		Intent intent = new Intent(getActivity(),GroupPage.class);
+        Log.d("groupid",tempid+"");
+        intent.putExtra("groupid",tempid);
+        startActivity(intent);
+		
+	}
    }
 

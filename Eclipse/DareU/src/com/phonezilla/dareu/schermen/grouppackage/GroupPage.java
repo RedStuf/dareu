@@ -15,10 +15,6 @@ import android.view.MenuItem;
 import android.widget.EditText;
 
 import com.phonezilla.dareu.R;
-import com.phonezilla.dareu.schermen.fragments.Challenges;
-import com.phonezilla.dareu.schermen.fragments.Friends;
-import com.phonezilla.dareu.schermen.fragments.Groups;
-import com.phonezilla.dareu.schermen.fragments.Settings;
 import com.phonezilla.dareu.schermen.grouppackage.fragments.Accepted;
 import com.phonezilla.dareu.schermen.grouppackage.fragments.Completed;
 import com.phonezilla.dareu.schermen.grouppackage.fragments.Pending;
@@ -100,7 +96,8 @@ public class GroupPage extends FragmentActivity {
                 alert.setView(input);
 
                 alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
+                    @Override
+					public void onClick(DialogInterface dialog, int whichButton) {
                         int id = 1;
                         String value = input.getText().toString();
 
@@ -109,7 +106,8 @@ public class GroupPage extends FragmentActivity {
                 });
 
                 alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
+                    @Override
+					public void onClick(DialogInterface dialog, int whichButton) {
                         // Canceled.
                     }
                 });

@@ -1,6 +1,8 @@
 package com.phonezilla.dareu.schermen;
 
-import android.app.ActionBar;
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -15,16 +17,17 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.SaveCallback;
 import com.phonezilla.dareu.R;
 import com.phonezilla.dareu.schermen.fragments.Challenges;
 import com.phonezilla.dareu.schermen.fragments.Friends;
 import com.phonezilla.dareu.schermen.fragments.Groups;
 import com.phonezilla.dareu.schermen.fragments.Settings;
 import com.phonezilla.dareu.schermen.grouppackage.GroupPage;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class MainActivity extends FragmentActivity implements View.OnClickListener {
@@ -38,6 +41,8 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         setContentView(R.layout.activity_main);
         pager = (ViewPager) findViewById(R.id.pager);
         pager.setAdapter(new Adapter(this,getSupportFragmentManager()));
+
+        //Parse.initialize(this, "jO1gEQOmHYCbpI9S05t2v4jfgAhnWglBTx4Tma8m", "nylyg1NjpI5NcW4bOz74xNebQbEEDF9OctbTj5qI");
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -60,20 +65,41 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                 alert.setView(input);
 
                 alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
+                    @Override
+					public void onClick(DialogInterface dialog, int whichButton) {
                         int id = 1;
                         String value = input.getText().toString();
                         /* hier moet de groep aangemaakt worden in de database 
                          * vervolgens kan hij opgehaald worden 
                          * door middel van een refresh
                          */
+                        ParseObject groups = new ParseObject("Groups");
+                        groups.put("GroupName", value);
+                                           
+                        // Save the post and return
+                        groups.saveInBackground(new SaveCallback () {
+                       
+                          @Override
+                          public void done(ParseException e) {
+                            if (e == null) {
+                              setResult(RESULT_OK);
+                            } else {
+                              Toast.makeText(getApplicationContext(),
+                              "Error saving: " + e.getMessage(),
+                                     Toast.LENGTH_SHORT)
+                                     .show();
+                            }
+                          }
+                       
+                        });
                         
-                        groups.add(new Groups());
+                        
                     }
                 });
 
                 alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
+                    @Override
+					public void onClick(DialogInterface dialog, int whichButton) {
                         // Canceled.
                     }
                 });
