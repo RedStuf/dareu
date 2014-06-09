@@ -4,7 +4,8 @@
     android:layout_height="match_parent"
     tools:context="com.phonezilla.dareu.schermen.fragments.Challenges"
     android:background="@drawable/shape"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:weightSum="1">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,48 +23,46 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         tools:context="com.phonezilla.dareu.schermen.fragments.Challenges"
         android:orientation="vertical"
-        android:layout_weight="1">
+        android:weightSum="1"
+        android:layout_weight="0.93">
 
-        <TextView
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="36dp"
             android:gravity="center_horizontal"
-            android:text="recent"
-            android:textSize="20dp"/>
+            android:weightSum="1">
 
-    </LinearLayout>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="47dp"
+                android:gravity="center_horizontal"
+                android:text="To Do"
+                android:id="@+id/tdo"
+                android:layout_weight="0.22"
+                android:textSize="20dp" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context="com.phonezilla.dareu.schermen.fragments.Challenges"
-        android:orientation="vertical"
-        android:layout_weight="1">
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="47dp"
+                android:gravity="center_horizontal"
+                android:text="Completed"
+                android:id="@+id/comp"
+                android:layout_weight="0.22"
+                android:textSize="20dp" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_horizontal"
-            android:text="best"
-            android:textSize="20dp"/>
-
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context="com.phonezilla.dareu.schermen.fragments.Challenges"
-        android:orientation="vertical"
-        android:layout_weight="1">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_horizontal"
-            android:text="saved"
-            android:textSize="20dp"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="47dp"
+                android:gravity="center_horizontal"
+                android:text="Leaderboard"
+                android:id="@+id/rank"
+                android:layout_weight="0.22"
+                android:textSize="20dp" />
+        </LinearLayout>
 
     </LinearLayout>
 
