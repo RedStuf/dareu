@@ -85,8 +85,8 @@ public class Groups extends Fragment {
 	        	
     	        for (ParseObject group : groupList) {
     	        	groups.add(group.getString("GroupName"));
-    	        	makeGroup(group.getString("GroupName"),group.getString("ObjectId"));
-    	        	Log.d("groep",group.getString("GroupName")+" is toegevoegd");
+    	        	makeGroup(group.getString("GroupName"),group.getString("objectId"));
+    	        	Log.d("groep",group.getString("GroupName")+" is toegevoegd en id = "+group.getString("objectId"));
     	        }
     	 
     	        //((ArrayAdapter<String>)ListView.getAdapter()).notifyDataSetChanged();
@@ -98,9 +98,8 @@ public class Groups extends Fragment {
     	    }            
     	  });
     }
-    public void makeGroup(String name,String id)
+    public void makeGroup(String name,String groupid)
     {
-        tempid = id;
         
         LinearLayout ll = new LinearLayout(getActivity());
         LinearLayout ll1 = new LinearLayout(getActivity());
@@ -147,7 +146,7 @@ public class Groups extends Fragment {
             }
         });
         */
-        ll.setOnClickListener(new KlikLuisteraar(tempid));
+        ll.setOnClickListener(new KlikLuisteraar(groupid));
         LinearLayout layout = (LinearLayout) view.findViewById(R.id.grouplayout);
         ll.setMinimumWidth(layout.getWidth());
         if(layout != null)
@@ -160,17 +159,18 @@ public class Groups extends Fragment {
 
 class KlikLuisteraar implements OnClickListener
 {
-	String id;
-	public KlikLuisteraar(String id)
+	String groupid;
+	public KlikLuisteraar(String groupid_)
 	{
-		this.id = id;
+		this.groupid = groupid_;
 	}
 
 	@Override
 	public void onClick(View v) {
 		Context context = v.getContext();
 		Intent intent = new Intent(context,GroupPage.class);
-        intent.putExtra("groupid",id);
+		Log.d("sda",groupid+"");
+        intent.putExtra("groupid",groupid);
         context.startActivity(intent);
 		
 	}

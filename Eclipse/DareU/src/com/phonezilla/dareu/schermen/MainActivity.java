@@ -3,6 +3,9 @@ package com.phonezilla.dareu.schermen;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.ActionBar;
+import android.app.FragmentTransaction;
+import android.app.ActionBar.TabListener;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -30,9 +33,10 @@ import com.phonezilla.dareu.schermen.fragments.Settings;
 import com.phonezilla.dareu.schermen.grouppackage.GroupPage;
 
 
-public class MainActivity extends FragmentActivity implements View.OnClickListener {
+public class MainActivity extends FragmentActivity implements View.OnClickListener, TabListener {
 
     private ViewPager pager;
+    private ActionBar actionbar;
     public static List groups = new ArrayList();
 
     @Override
@@ -40,9 +44,66 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         pager = (ViewPager) findViewById(R.id.pager);
-        pager.setAdapter(new Adapter(this,getSupportFragmentManager()));
+        pager.setAdapter(new Adapter(getSupportFragmentManager()));
+        
+        pager = (ViewPager) findViewById(R.id.pager);
+        pager.setAdapter(new Adapter(getSupportFragmentManager()));
+
+        pager.setOnPageChangeListener(new ViewPager.OnPageChangeListener()
+        {
+
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                actionbar.setSelectedNavigationItem(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+        actionbar=getActionBar();
+        actionbar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+
+        ActionBar.Tab tab1= actionbar.newTab();
+        tab1.setText("Groups");
+        tab1.setTabListener(this);
+        ActionBar.Tab tab2= actionbar.newTab();
+        tab2.setText("Challenges");
+        tab2.setTabListener(this);
+        ActionBar.Tab tab3= actionbar.newTab();
+        tab3.setText("Friends");
+        tab3.setTabListener(this);
+        ActionBar.Tab tab4= actionbar.newTab();
+        tab4.setText("Settings");
+        tab4.setTabListener(this);
+
+        actionbar.addTab(tab1);
+        actionbar.addTab(tab2);
+        actionbar.addTab(tab3);
+        actionbar.addTab(tab4);
 
         //Parse.initialize(this, "jO1gEQOmHYCbpI9S05t2v4jfgAhnWglBTx4Tma8m", "nylyg1NjpI5NcW4bOz74xNebQbEEDF9OctbTj5qI");
+    }
+    
+    @Override
+    public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+        pager.setCurrentItem(tab.getPosition());
+    }
+
+    @Override
+    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+
+    }
+
+    @Override
+    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -123,11 +184,9 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
  */
 class Adapter extends FragmentPagerAdapter {
 
-    Object x;
-    public Adapter(Object x ,FragmentManager fm) {
+    public Adapter(FragmentManager fm) {
 
         super(fm);
-        this.x = x;
     }
 
     @Override

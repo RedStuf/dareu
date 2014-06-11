@@ -1,7 +1,9 @@
 package com.phonezilla.dareu.schermen.grouppackage;
 
 import android.app.ActionBar;
+import android.app.ActionBar.TabListener;
 import android.app.AlertDialog;
+import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -20,7 +22,7 @@ import com.phonezilla.dareu.schermen.grouppackage.fragments.Completed;
 import com.phonezilla.dareu.schermen.grouppackage.fragments.Pending;
 
 
-public class GroupPage extends FragmentActivity {
+public class GroupPage extends FragmentActivity implements TabListener {
 
     ActionBar actionbar;
     ViewPager pager;
@@ -45,7 +47,7 @@ public class GroupPage extends FragmentActivity {
 
             @Override
             public void onPageSelected(int position) {
-                //actionbar.setSelectedNavigationItem(position);
+                actionbar.setSelectedNavigationItem(position);
             }
 
             @Override
@@ -53,7 +55,7 @@ public class GroupPage extends FragmentActivity {
 
             }
         });
-        /*actionbar=getActionBar();
+        actionbar=getActionBar();
         actionbar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
         ActionBar.Tab tab1= actionbar.newTab();
@@ -72,13 +74,13 @@ public class GroupPage extends FragmentActivity {
         actionbar.addTab(tab1);
         actionbar.addTab(tab2);
         actionbar.addTab(tab3);
-        actionbar.addTab(tab4);*/
+        actionbar.addTab(tab4);
     }
     
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.mainmenu, menu);
+        inflater.inflate(R.menu.challengemenu, menu);
         return true;
     }
     @Override
@@ -119,7 +121,7 @@ public class GroupPage extends FragmentActivity {
         }
     }
     
-/*
+
     @Override
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
         pager.setCurrentItem(tab.getPosition());
@@ -133,7 +135,7 @@ public class GroupPage extends FragmentActivity {
     @Override
     public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
 
-    }*/
+    }
 }
 
 class Adapter extends FragmentPagerAdapter {

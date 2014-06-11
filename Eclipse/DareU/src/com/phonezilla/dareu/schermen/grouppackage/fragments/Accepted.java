@@ -56,7 +56,8 @@ public class Accepted extends Fragment {
   	        //groups.clear();
 	        	
   	        for (ParseObject group : groupList) {
-  	        	addChallenge(group.getString("ChallengeName"),group.getString("Description"),"ZSz0Zil8yS");
+  	        	Log.d("groupiddas", getActivity().getIntent().getExtras().containsKey("groupid")+"");
+  	        	addChallenge(group.getString("ChallengeName"),group.getString("Description"),getActivity().getIntent().getExtras().get("groupid").toString());
   	        	Log.d("groep",group.getString("GroupName")+" is toegevoegd");
   	        }
   	 
