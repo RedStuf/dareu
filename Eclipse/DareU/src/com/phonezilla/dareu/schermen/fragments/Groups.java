@@ -2,7 +2,24 @@ package com.phonezilla.dareu.schermen.fragments;
 
 
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
+
+import android.content.Intent;
+import android.graphics.Color;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -16,7 +33,7 @@ import com.phonezilla.dareu.schermen.grouppackage.GroupPage;
  *
  */
 
-public class Groups extends Fragment implements ListView.OnItemClickListener {
+public class Groups extends Fragment {
     private String tempid;
     private Random r = new Random();
     private final int GROUPLAYOUTHEIGHT =100;
@@ -64,7 +81,7 @@ public class Groups extends Fragment implements ListView.OnItemClickListener {
     	        //groups.clear();
 	        	
     	        for (ParseObject group : groupList) {
-    	        	groups.add(group.getString("GroupName"),group.getString("ObjectId"));
+    	        	//groups.add(group.getString("GroupName"),group.getString("ObjectId"));
     	        	makeGroup(group.getString("GroupName"),group.getString("ObjectId"));
     	        	Log.d("groep",group.getString("GroupName")+" is toegevoegd");
     	        }
@@ -135,6 +152,15 @@ class KlikLuisteraar implements OnClickListener
 {
 	public KlikLuisteraar(int id)
 	{
+		
+	}
+
+	@Override
+	public void onClick(View v) {
+		Intent intent = new Intent(getActivity(),GroupPage.class);
+        Log.d("groupid",tempid+"");
+        intent.putExtra("groupid",tempid);
+        startActivity(intent);
 		
 	}
 	
