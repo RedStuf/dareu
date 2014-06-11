@@ -13,12 +13,14 @@
         tools:context="com.phonezilla.dareu.schermen.fragments.Challenges"
         >
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Accepted"
-            android:gravity="center_horizontal"
-            android:textSize="50dp"/>
+         <Button
+        android:id="@+id/button1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="New Challenge"
+        android:gravity="center_horizontal"
+        android:textSize="30dp" 
+        />
 
     </LinearLayout>
     <ScrollView 

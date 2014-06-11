@@ -33,7 +33,7 @@ import com.phonezilla.dareu.schermen.fragments.Settings;
 import com.phonezilla.dareu.schermen.grouppackage.GroupPage;
 
 
-public class MainActivity extends FragmentActivity implements View.OnClickListener, TabListener {
+public class MainActivity extends FragmentActivity implements TabListener {
 
     private ViewPager pager;
     private ActionBar actionbar;
@@ -105,78 +105,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
 
     }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.mainmenu, menu);
-        return true;
-    }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
-        switch (item.getItemId()) {
-            case R.id.newgroup:
-                AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
-                alert.setTitle("Maak een groep");
-                alert.setMessage("Voer een groepsnaam in");
-
-// Set an EditText view to get user input
-                final EditText input = new EditText(this);
-                alert.setView(input);
-
-                alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                    @Override
-					public void onClick(DialogInterface dialog, int whichButton) {
-                        int id = 1;
-                        String value = input.getText().toString();
-                        /* hier moet de groep aangemaakt worden in de database 
-                         * vervolgens kan hij opgehaald worden 
-                         * door middel van een refresh
-                         */
-                        ParseObject groups = new ParseObject("Groups");
-                        groups.put("GroupName", value);
-                                           
-                        // Save the post and return
-                        groups.saveInBackground(new SaveCallback () {
-                       
-                          @Override
-                          public void done(ParseException e) {
-                            if (e == null) {
-                              setResult(RESULT_OK);
-                            } else {
-                              Toast.makeText(getApplicationContext(),
-                              "Error saving: " + e.getMessage(),
-                                     Toast.LENGTH_SHORT)
-                                     .show();
-                            }
-                          }
-                       
-                        });
-                        
-                        
-                    }
-                });
-
-                alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-					public void onClick(DialogInterface dialog, int whichButton) {
-                        // Canceled.
-                    }
-                });
-
-                alert.show();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    @Override
-    public void onClick(View view) {
-        Intent intent = new Intent(this,GroupPage.class);
-        startActivity(intent);
-    }
 }
 
 /*

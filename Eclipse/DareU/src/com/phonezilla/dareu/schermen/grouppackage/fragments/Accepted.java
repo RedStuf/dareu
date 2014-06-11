@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,18 +13,23 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.SaveCallback;
 import com.phonezilla.dareu.R;
 
 public class Accepted extends Fragment {
 
-    View view;
+    private View view;
+    private String groupid;
     private Random r = new Random();
     private final int LAYOUTHEIGHT = 100;
 
@@ -38,7 +45,80 @@ public class Accepted extends Fragment {
 
         view = inflater.inflate(R.layout.fragment_accepted, container, false);
         getChallenges();
+        Button button1 = (Button)view.findViewById(R.id.button1);
+        button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+        		makeChallenge();
+        	}
+        });
         return view;
+    }
+    public void makeChallenge()
+    {
+    	AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+
+        alert.setTitle("Maak een Challenge");
+        alert.setMessage("Voer een naam,description in");
+
+//Set an EditText view to get user input
+       
+        final EditText input1 = new EditText(getActivity());
+        final EditText input2 = new EditText(getActivity());
+        LinearLayout ll = new LinearLayout(getActivity());
+        ll.setOrientation(LinearLayout.VERTICAL);
+        ll.addView(input1);
+        ll.addView(input2);
+        alert.setView(ll);
+      
+
+        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+			public void onClick(DialogInterface dialog, int whichButton) {
+                int id = 1;
+                String value1 = input1.getText().toString();
+                String value2 = input2.getText().toString();
+                
+                /* hier moet de groep aangemaakt worden in de database 
+                 * vervolgens kan hij opgehaald worden 
+                 * door middel van een refresh
+                 */
+                ParseObject challenges = new ParseObject("Challenges");
+                challenges.put("ChallengeName", value1);
+                challenges.put("Description", value2);
+                challenges.put("GroupId", groupid);
+                
+                                   
+                // Save the post and return
+                challenges.saveInBackground(new SaveCallback () {
+               
+                  @Override
+                  public void done(ParseException e) {
+                    if (e == null) {
+                    	getActivity().setResult(getActivity().RESULT_OK);
+                    } else {
+                      Toast.makeText(getActivity().getApplicationContext(),
+                      "Error saving: " + e.getMessage(),
+                             Toast.LENGTH_SHORT)
+                             .show();
+                    }
+                  }
+               
+                });
+                
+
+                getChallenges();   
+            }
+        });
+
+        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+			public void onClick(DialogInterface dialog, int whichButton) {
+                // Canceled.
+            }
+        });
+
+        alert.show();    	
     }
     private void getChallenges()
     {
@@ -56,9 +136,14 @@ public class Accepted extends Fragment {
   	        //groups.clear();
 	        	
   	        for (ParseObject group : groupList) {
-  	        	Log.d("groupiddas", getActivity().getIntent().getExtras().containsKey("groupid")+"");
-  	        	addChallenge(group.getString("ChallengeName"),group.getString("Description"),getActivity().getIntent().getExtras().get("groupid").toString());
-  	        	Log.d("groep",group.getString("GroupName")+" is toegevoegd");
+  	        	groupid = getActivity().getIntent().getExtras().get("groupid").toString();
+  	        	Log.d("challenge groep id",groupid + " "+ group.getString("GroupId")+" x");
+  	        	if(group.getString("GroupId").equals(groupid))
+  	        	{
+  	        		addChallenge(group.getString("ChallengeName"),group.getString("Description"));
+  	  	        	Log.d("groep",group.getString("ChallengeName")+" is toegevoegd");
+  	        	}
+  	        	
   	        }
   	 
   	        //((ArrayAdapter<String>)ListView.getAdapter()).notifyDataSetChanged();
@@ -71,7 +156,7 @@ public class Accepted extends Fragment {
   	  });
     }
 
-    private void addChallenge(String name,String description,String id) {
+    private void addChallenge(String name,String description) {
             
             LinearLayout ll = new LinearLayout(getActivity());
             

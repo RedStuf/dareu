@@ -30,18 +30,19 @@ public final class R {
         public static final int stamp2=0x7f020004;
     }
     public static final class id {
-        public static final int acceptedchallenges=0x7f090002;
-        public static final int camera_surface_view=0x7f090003;
-        public static final int checkBox=0x7f090009;
-        public static final int comp=0x7f090006;
-        public static final int grouplayout=0x7f090008;
+        public static final int acceptedchallenges=0x7f090003;
+        public static final int button1=0x7f090002;
+        public static final int camera_surface_view=0x7f090004;
+        public static final int checkBox=0x7f09000a;
+        public static final int comp=0x7f090007;
+        public static final int grouplayout=0x7f090009;
         public static final int imageView=0x7f090000;
-        public static final int newchallenge=0x7f09000a;
-        public static final int newgroup=0x7f09000b;
+        public static final int newchallenge=0x7f09000b;
+        public static final int newgroup=0x7f09000c;
         public static final int pager=0x7f090001;
-        public static final int photo_button=0x7f090004;
-        public static final int rank=0x7f090007;
-        public static final int tdo=0x7f090005;
+        public static final int photo_button=0x7f090005;
+        public static final int rank=0x7f090008;
+        public static final int tdo=0x7f090006;
     }
     public static final class layout {
         public static final int activity_begin=0x7f030000;

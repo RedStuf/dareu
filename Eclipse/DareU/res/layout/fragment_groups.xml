@@ -12,12 +12,13 @@
         tools:context="com.phonezilla.dareu.schermen.fragments.Challenges"
         >
 
-        <TextView
+        <Button
+            android:id="@+id/button1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Groups"
+            android:text="New Group"
             android:gravity="center_horizontal"
-            android:textSize="50dp"/>
+            android:textSize="30dp"/>
 
     </LinearLayout>
     <ScrollView 

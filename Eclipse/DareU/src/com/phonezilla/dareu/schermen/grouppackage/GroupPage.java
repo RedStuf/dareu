@@ -59,67 +59,21 @@ public class GroupPage extends FragmentActivity implements TabListener {
         actionbar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
         ActionBar.Tab tab1= actionbar.newTab();
-        tab1.setText("Groups");
+        tab1.setText("Accepted");
         tab1.setTabListener(this);
         ActionBar.Tab tab2= actionbar.newTab();
-        tab2.setText("Challenges");
+        tab2.setText("Pending");
         tab2.setTabListener(this);
         ActionBar.Tab tab3= actionbar.newTab();
-        tab3.setText("Friends");
+        tab3.setText("Completed");
         tab3.setTabListener(this);
-        ActionBar.Tab tab4= actionbar.newTab();
-        tab4.setText("Settings");
-        tab4.setTabListener(this);
 
         actionbar.addTab(tab1);
         actionbar.addTab(tab2);
         actionbar.addTab(tab3);
-        actionbar.addTab(tab4);
     }
     
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.challengemenu, menu);
-        return true;
-    }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
-        switch (item.getItemId()) {
-            case R.id.newgroup:
-                AlertDialog.Builder alert = new AlertDialog.Builder(this);
-
-                alert.setTitle("Maak een Challenge");
-                alert.setMessage("Hoe heet jou challenge");
-
-// Set an EditText view to get user input
-                final EditText input = new EditText(this);
-                alert.setView(input);
-
-                alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                    @Override
-					public void onClick(DialogInterface dialog, int whichButton) {
-                        int id = 1;
-                        String value = input.getText().toString();
-
-
-                    }
-                });
-
-                alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-					public void onClick(DialogInterface dialog, int whichButton) {
-                        // Canceled.
-                    }
-                });
-
-                alert.show();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
+    
     
 
     @Override

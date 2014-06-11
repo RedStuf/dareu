@@ -15,7 +15,10 @@ public class Completed extends Fragment {
         // Required empty public constructor
     }
 
-
+    public void makeChallenge(View v)
+    {
+    	
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

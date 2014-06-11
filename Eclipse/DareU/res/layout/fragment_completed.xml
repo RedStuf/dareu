@@ -8,11 +8,15 @@
     >
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+     <Button
+        android:id="@+id/button1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Completed"
+        android:text="New Challenge"
         android:gravity="center_horizontal"
-        android:textSize="50dp" />
+        android:textSize="30dp" 
+        android:onClick="makeChallenge"
+        />
+
 
 </FrameLayout>
