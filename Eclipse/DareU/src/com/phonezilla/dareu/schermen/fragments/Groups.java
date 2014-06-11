@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -128,19 +129,19 @@ public class Groups extends Fragment {
         ll2.addView(t2);
         ll.addView(ll1);
         ll.addView(ll2);
-        ll.setOnClickListener(new View.OnClickListener() {
+        /*ll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-            	/*
-            	 * 
-            	 */
+            	
             	Intent intent = new Intent(getActivity(),GroupPage.class);
                 Log.d("groupid",tempid+"");
                 intent.putExtra("groupid",tempid);
                 startActivity(intent);
                 
             }
-        });
+        });*/
+        ll.setOnClickListener(new KlikLuisteraar(tempid));
+        
         LinearLayout layout = (LinearLayout) view.findViewById(R.id.grouplayout);
         ll.setMinimumWidth(layout.getWidth());
         if(layout != null)
@@ -150,17 +151,18 @@ public class Groups extends Fragment {
 
 class KlikLuisteraar implements OnClickListener
 {
-	public KlikLuisteraar(int id)
+	String id;
+	public KlikLuisteraar(String id)
 	{
-		
+		this.id = id;
 	}
 
 	@Override
 	public void onClick(View v) {
-		Intent intent = new Intent(getActivity(),GroupPage.class);
-        Log.d("groupid",tempid+"");
-        intent.putExtra("groupid",tempid);
-        startActivity(intent);
+		Context context = v.getContext();
+		Intent intent = new Intent(context,GroupPage.class);
+        intent.putExtra("groupid",id);
+        context.startActivity(intent);
 		
 	}
 	

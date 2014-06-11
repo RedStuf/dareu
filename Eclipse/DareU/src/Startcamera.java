@@ -1,3 +1,5 @@
+
+/*
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.view.View;
@@ -41,4 +43,4 @@ public class Startcamera {
 
 	// Geschreven door Amit Sanchit//
 	
-
+*/

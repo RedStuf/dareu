@@ -10,8 +10,8 @@
     }
  */
 
-
-package com.parse.Dare U;
+/*
+package com.parse.dareu;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -127,6 +127,7 @@ public class CameraFragment extends Fragment {
 	 * they are saved. Since we never need a full-size image in our app, we'll
 	 * save a scaled one right away.
 	 */
+/*
 	private void saveScaledPhoto(byte[] data) {
 
 		// Resize photo from camera byte array
@@ -197,5 +198,5 @@ public class CameraFragment extends Fragment {
 	}
 
 }
-
+*/
 
