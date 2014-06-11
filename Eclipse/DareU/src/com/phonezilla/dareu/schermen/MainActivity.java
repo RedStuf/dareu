@@ -157,3 +157,4 @@ class Adapter extends FragmentPagerAdapter {
         return 4;
     }
 }
+
