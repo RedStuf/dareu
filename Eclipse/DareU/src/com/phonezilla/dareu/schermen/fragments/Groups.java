@@ -17,6 +17,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -35,7 +37,7 @@ import com.phonezilla.dareu.schermen.grouppackage.GroupPage;
  */
 
 public class Groups extends Fragment {
-    private String tempid;
+    String tempid;
     private Random r = new Random();
     private final int GROUPLAYOUTHEIGHT =100;
     static View view = null;
@@ -82,7 +84,7 @@ public class Groups extends Fragment {
     	        //groups.clear();
 	        	
     	        for (ParseObject group : groupList) {
-    	        	//groups.add(group.getString("GroupName"),group.getString("ObjectId"));
+    	        	groups.add(group.getString("GroupName"));
     	        	makeGroup(group.getString("GroupName"),group.getString("ObjectId"));
     	        	Log.d("groep",group.getString("GroupName")+" is toegevoegd");
     	        }
@@ -103,11 +105,12 @@ public class Groups extends Fragment {
         LinearLayout ll = new LinearLayout(getActivity());
         LinearLayout ll1 = new LinearLayout(getActivity());
         LinearLayout ll2 = new LinearLayout(getActivity());
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         
         TextView t1 = new TextView(getActivity());
         TextView t2 = new TextView(getActivity());
         ImageView image = new ImageView(getActivity());
-        int color = Color.argb(255, r.nextInt(256), r.nextInt(256), r.nextInt(256));   
+        int color = Color.argb(255, 40, 40, 40);   
         
         ll.setBackgroundColor(color);
         ll.setMinimumHeight(GROUPLAYOUTHEIGHT);
@@ -129,6 +132,9 @@ public class Groups extends Fragment {
         ll2.addView(t2);
         ll.addView(ll1);
         ll.addView(ll2);
+        ll.setPadding(30, 0, 0, 0);
+        params.setMargins(0, 0, 0, 5);
+        ll.setLayoutParams(params);
         /*ll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -139,15 +145,18 @@ public class Groups extends Fragment {
                 startActivity(intent);
                 
             }
-        });*/
+        });
+        */
         ll.setOnClickListener(new KlikLuisteraar(tempid));
-        
         LinearLayout layout = (LinearLayout) view.findViewById(R.id.grouplayout);
         ll.setMinimumWidth(layout.getWidth());
         if(layout != null)
             layout.addView(ll);
     }
+
+
    }
+
 
 class KlikLuisteraar implements OnClickListener
 {

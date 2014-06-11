@@ -42,7 +42,7 @@ public class Accepted extends Fragment {
     }
     private void getChallenges()
     {
-    	ParseQuery<ParseObject> query = ParseQuery.getQuery("Groups");
+    	ParseQuery<ParseObject> query = ParseQuery.getQuery("Challenges");
         
   	  // Run the query  
   	  query.findInBackground(new FindCallback<ParseObject>() {
@@ -56,7 +56,7 @@ public class Accepted extends Fragment {
   	        //groups.clear();
 	        	
   	        for (ParseObject group : groupList) {
-  	        	addChallenge(group.getString("GroupName"),group.getString("ObjectId"));
+  	        	addChallenge(group.getString("ChallengeName"),group.getString("Description"),"ZSz0Zil8yS");
   	        	Log.d("groep",group.getString("GroupName")+" is toegevoegd");
   	        }
   	 
@@ -70,13 +70,13 @@ public class Accepted extends Fragment {
   	  });
     }
 
-    private void addChallenge(String name,String id) {
+    private void addChallenge(String name,String description,String id) {
             
             LinearLayout ll = new LinearLayout(getActivity());
             
             TextView t1 = new TextView(getActivity());
             TextView t2 = new TextView(getActivity());
-            int color = Color.argb(255, r.nextInt(256), r.nextInt(256), r.nextInt(256));   
+            int color = Color.argb(255, 40, 40, 40);   
             
             ll.setBackgroundColor(color);
             ll.setMinimumHeight(LAYOUTHEIGHT);
@@ -85,7 +85,7 @@ public class Accepted extends Fragment {
             ll.setOrientation(LinearLayout.VERTICAL);
             
             t1.setText(name);
-            t2.setText("description");
+            t2.setText(description);
             ll.addView(t1);
             ll.addView(t2);
             ll.setOnClickListener(new View.OnClickListener() {
