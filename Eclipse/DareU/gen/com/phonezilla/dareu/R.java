@@ -36,7 +36,8 @@ public final class R {
         public static final int comp=0x7f090006;
         public static final int grouplayout=0x7f090008;
         public static final int imageView=0x7f090000;
-        public static final int newgroup=0x7f09000a;
+        public static final int newchallenge=0x7f09000a;
+        public static final int newgroup=0x7f09000b;
         public static final int pager=0x7f090001;
         public static final int photo_button=0x7f090004;
         public static final int rank=0x7f090007;
@@ -56,7 +57,8 @@ public final class R {
         public static final int fragment_settings=0x7f03000a;
     }
     public static final class menu {
-        public static final int mainmenu=0x7f080000;
+        public static final int challengemenu=0x7f080000;
+        public static final int mainmenu=0x7f080001;
     }
     public static final class string {
         public static final int action_settings=0x7f060002;
