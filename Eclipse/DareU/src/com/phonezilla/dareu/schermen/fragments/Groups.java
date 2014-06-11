@@ -7,7 +7,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -19,15 +21,19 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.SaveCallback;
 import com.phonezilla.dareu.R;
 import com.phonezilla.dareu.schermen.grouppackage.GroupPage;
 
@@ -57,6 +63,13 @@ public class Groups extends Fragment {
 
         view = inflater.inflate(R.layout.fragment_groups, container, false);
         groups = new ArrayList<String>();
+        Button button1 = (Button)view.findViewById(R.id.button1);
+        button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+        		makeGroup();
+        	}
+        });
         /*ListView = (ListView) view.findViewById(R.id.listView1);
         
 
@@ -65,11 +78,71 @@ public class Groups extends Fragment {
         
 		ListView.setAdapter(adapter);
 		ListView.setOnItemClickListener(this);*/
-        addGroup();
+        getGroups();
         return view;
     }
-    public void addGroup()
+    public void makeGroup()
     {
+    	AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+
+        alert.setTitle("Maak een groep");
+        alert.setMessage("Voer een groepsnaam in");
+
+//Set an EditText view to get user input
+        final EditText input = new EditText(getActivity());
+        alert.setView(input);
+
+        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+			public void onClick(DialogInterface dialog, int whichButton) {
+                int id = 1;
+                String value = input.getText().toString();
+                /* hier moet de groep aangemaakt worden in de database 
+                 * vervolgens kan hij opgehaald worden 
+                 * door middel van een refresh
+                 */
+                ParseObject groups = new ParseObject("Groups");
+                groups.put("GroupName", value);
+                                   
+                // Save the post and return
+                groups.saveInBackground(new SaveCallback () {
+               
+                  @Override
+                  public void done(ParseException e) {
+                    if (e == null) {
+                    	getActivity().setResult(getActivity().RESULT_OK);
+                    } else {
+                      Toast.makeText(getActivity().getApplicationContext(),
+                      "Error saving: " + e.getMessage(),
+                             Toast.LENGTH_SHORT)
+                             .show();
+                    }
+                  }
+               
+                });
+                
+                getGroups();
+            }
+        });
+
+        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+			public void onClick(DialogInterface dialog, int whichButton) {
+                // Canceled.
+            }
+        });
+
+        alert.show();
+
+    }
+    public void getGroups()
+    {
+
+        LinearLayout layout = (LinearLayout) view.findViewById(R.id.grouplayout);
+        if(layout != null)
+        {
+        	layout.removeAllViews();
+        }
     	ParseQuery<ParseObject> query = ParseQuery.getQuery("Groups");
              
     	  // Run the query  
@@ -85,8 +158,8 @@ public class Groups extends Fragment {
 	        	
     	        for (ParseObject group : groupList) {
     	        	groups.add(group.getString("GroupName"));
-    	        	makeGroup(group.getString("GroupName"),group.getString("objectId"));
-    	        	Log.d("groep",group.getString("GroupName")+" is toegevoegd en id = "+group.getString("objectId"));
+    	        	addGroup(group.getString("GroupName"),group.getObjectId());
+    	        	Log.d("groep",group.getString("GroupName")+" is toegevoegd en id = "+group.getObjectId());
     	        }
     	 
     	        //((ArrayAdapter<String>)ListView.getAdapter()).notifyDataSetChanged();
@@ -98,7 +171,7 @@ public class Groups extends Fragment {
     	    }            
     	  });
     }
-    public void makeGroup(String name,String groupid)
+    public void addGroup(String name,String groupid)
     {
         
         LinearLayout ll = new LinearLayout(getActivity());
@@ -150,7 +223,7 @@ public class Groups extends Fragment {
         LinearLayout layout = (LinearLayout) view.findViewById(R.id.grouplayout);
         ll.setMinimumWidth(layout.getWidth());
         if(layout != null)
-            layout.addView(ll);
+        	layout.addView(ll);
     }
 
 
