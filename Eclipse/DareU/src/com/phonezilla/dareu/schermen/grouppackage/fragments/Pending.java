@@ -15,16 +15,22 @@ public class Pending extends Fragment {
         // Required empty public constructor
     }
 
-    public void makeChallenge(View v)
-    {
-    	
-    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_pending, container, false);
     }
+
+	public void makeChallenge() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void getChallenges() {
+		// TODO Auto-generated method stub
+		
+	}
 
 
 }

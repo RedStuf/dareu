@@ -2,7 +2,6 @@ package com.phonezilla.dareu.schermen.grouppackage.fragments;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -30,7 +29,6 @@ public class Accepted extends Fragment {
 
     private View view;
     private String groupid;
-    private Random r = new Random();
     private final int LAYOUTHEIGHT = 100;
 
     public Accepted() {
@@ -75,7 +73,7 @@ public class Accepted extends Fragment {
         alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
 			public void onClick(DialogInterface dialog, int whichButton) {
-                int id = 1;
+               
                 String value1 = input1.getText().toString();
                 String value2 = input2.getText().toString();
                 
@@ -120,7 +118,7 @@ public class Accepted extends Fragment {
 
         alert.show();    	
     }
-    private void getChallenges()
+    public void getChallenges()
     {
     	ParseQuery<ParseObject> query = ParseQuery.getQuery("Challenges");
         
