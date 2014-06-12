@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.InputFilter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,12 +25,14 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 import com.phonezilla.dareu.R;
+import com.phonezilla.dareu.schermen.MainActivity;
 
 public class Accepted extends Fragment {
 
     private View view;
     private String groupid;
     private final int LAYOUTHEIGHT = 100;
+    private final int DESCRIPTIONLENGTH = 250;
 
     public Accepted() {
         // Required empty public constructor
@@ -62,7 +65,9 @@ public class Accepted extends Fragment {
 //Set an EditText view to get user input
        
         final EditText input1 = new EditText(getActivity());
+        input1.setFilters(new InputFilter[] {new InputFilter.LengthFilter(MainActivity.MAXLETTERS)});
         final EditText input2 = new EditText(getActivity());
+        input2.setFilters(new InputFilter[] {new InputFilter.LengthFilter(DESCRIPTIONLENGTH)});
         LinearLayout ll = new LinearLayout(getActivity());
         ll.setOrientation(LinearLayout.VERTICAL);
         ll.addView(input1);

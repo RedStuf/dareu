@@ -14,13 +14,12 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.InputFilter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -35,6 +34,7 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 import com.phonezilla.dareu.R;
+import com.phonezilla.dareu.schermen.MainActivity;
 import com.phonezilla.dareu.schermen.grouppackage.GroupPage;
 
 /**
@@ -44,8 +44,6 @@ import com.phonezilla.dareu.schermen.grouppackage.GroupPage;
 
 public class Groups extends Fragment {
     String tempid;
-    private Random r = new Random();
-    private final int GROUPLAYOUTHEIGHT =100;
     static View view = null;
     private ArrayList<String> groups;
     ListView ListView;
@@ -90,6 +88,7 @@ public class Groups extends Fragment {
 
 //Set an EditText view to get user input
         final EditText input = new EditText(getActivity());
+        input.setFilters(new InputFilter[] {new InputFilter.LengthFilter(MainActivity.MAXLETTERS)});
         alert.setView(input);
 
         alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -185,7 +184,7 @@ public class Groups extends Fragment {
         int color = Color.argb(255, 40, 40, 40);   
         
         ll.setBackgroundColor(color);
-        ll.setMinimumHeight(GROUPLAYOUTHEIGHT);
+        ll.setMinimumHeight(MainActivity.GROUPLAYOUTHEIGHT);
         ll.setWeightSum(1);
 
         ll2.setOrientation(LinearLayout.VERTICAL);
@@ -195,8 +194,8 @@ public class Groups extends Fragment {
         
         image.setImageDrawable(image.getResources().getDrawable(R.drawable.stamp2));
         image.setAdjustViewBounds(true);
-        image.setMaxHeight(GROUPLAYOUTHEIGHT);
-        image.setMaxWidth(GROUPLAYOUTHEIGHT);
+        image.setMaxHeight(MainActivity.GROUPLAYOUTHEIGHT);
+        image.setMaxWidth(MainActivity.GROUPLAYOUTHEIGHT);
         ll1.setWeightSum(1);
         ll2.setWeightSum(2);
         ll1.addView(image);

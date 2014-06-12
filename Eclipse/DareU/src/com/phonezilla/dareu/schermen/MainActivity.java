@@ -38,6 +38,8 @@ public class MainActivity extends FragmentActivity implements TabListener {
     private ViewPager pager;
     private ActionBar actionbar;
     public static List groups = new ArrayList();
+    public static final int GROUPLAYOUTHEIGHT =100;
+    public static final int MAXLETTERS = 20;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
