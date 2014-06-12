@@ -4,40 +4,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.ActionBar;
-import android.app.FragmentTransaction;
 import android.app.ActionBar.TabListener;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.Toast;
 
-import com.parse.ParseException;
 import com.parse.ParseObject;
-import com.parse.SaveCallback;
 import com.phonezilla.dareu.R;
 import com.phonezilla.dareu.schermen.fragments.Challenges;
 import com.phonezilla.dareu.schermen.fragments.Friends;
 import com.phonezilla.dareu.schermen.fragments.Groups;
-import com.phonezilla.dareu.schermen.fragments.Settings;
-import com.phonezilla.dareu.schermen.grouppackage.GroupPage;
 
 
 public class MainActivity extends FragmentActivity implements TabListener {
 
     private ViewPager pager;
     private ActionBar actionbar;
-    public static List groups = new ArrayList();
+    public static List<ParseObject> groups = new ArrayList<ParseObject>();
     public static final int GROUPLAYOUTHEIGHT =100;
     public static final int MAXLETTERS = 20;
 
@@ -81,14 +68,10 @@ public class MainActivity extends FragmentActivity implements TabListener {
         ActionBar.Tab tab3= actionbar.newTab();
         tab3.setText("Friends");
         tab3.setTabListener(this);
-        ActionBar.Tab tab4= actionbar.newTab();
-        tab4.setText("Settings");
-        tab4.setTabListener(this);
 
         actionbar.addTab(tab1);
         actionbar.addTab(tab2);
         actionbar.addTab(tab3);
-        actionbar.addTab(tab4);
 
         //Parse.initialize(this, "jO1gEQOmHYCbpI9S05t2v4jfgAhnWglBTx4Tma8m", "nylyg1NjpI5NcW4bOz74xNebQbEEDF9OctbTj5qI");
     }
@@ -135,16 +118,12 @@ class Adapter extends FragmentPagerAdapter {
         {
             fragment = new Friends();
         }
-        if(position == 3)
-        {
-            fragment = new Settings();
-        }
         return fragment;
     }
 
     @Override
     public int getCount() {
-        return 4;
+        return 3;
     }
 }
 
