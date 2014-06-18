@@ -30,4 +30,11 @@
 		<nature>com.android.ide.eclipse.adt.AndroidNature</nature>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>facebook</name>
+			<type>2</type>
+			<location>C:/Users/Wouter/Documents/GitHub/dareu/Eclipse/facebook</location>
+		</link>
+	</linkedResources>
 </projectDescription>

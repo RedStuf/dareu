@@ -13,11 +13,10 @@
         tools:context="com.phonezilla.dareu.schermen.fragments.Challenges"
         >
 
-         <Button
+         <Spinner
         android:id="@+id/button1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="New Challenge"
+        android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:textSize="30dp" 
         />
