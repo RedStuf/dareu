@@ -34,7 +34,7 @@
 		<link>
 			<name>facebook</name>
 			<type>2</type>
-			<location>C:/Users/Wouter/Documents/GitHub/dareu/Eclipse/facebook</location>
+			<locationURI>PARENT-1-PROJECT_LOC/facebook</locationURI>
 		</link>
 	</linkedResources>
 </projectDescription>
