@@ -1,8 +1,11 @@
 package com.phonezilla.dareu.schermen.grouppackage;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import Objects.ArrayAdapterItem;
+import Objects.OnItemClickListenerListViewItem;
 import Objects.User;
 import android.app.ActionBar;
 import android.app.ActionBar.TabListener;
@@ -25,6 +28,7 @@ import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.phonezilla.dareu.R;
 import com.phonezilla.dareu.schermen.grouppackage.fragments.Accepted;
@@ -34,9 +38,10 @@ import com.phonezilla.dareu.schermen.grouppackage.fragments.Pending;
 
 public class GroupPage extends FragmentActivity implements TabListener {
 
+	public static ArrayList<User> ObjectItemData = new ArrayList<User>();
     ActionBar actionbar;
     ViewPager pager;
-    AlertDialog alertDialog;
+    public AlertDialog.Builder alertDialogStores;
     public GroupPage()
     {
 
@@ -103,38 +108,31 @@ public class GroupPage extends FragmentActivity implements TabListener {
     }
     public void showUserScreen()
     {
-    	ParseQuery<ParseObject> query = ParseQuery.getQuery("User");
-        
-    	  // Run the query  
-    	  query.findInBackground(new FindCallback<ParseObject>() {
-    	 
-    	    @Override
-    	    public void done(List<ParseObject> userList,
-    	        ParseException e) {
-    	      if (e == null) {
-    	        // If there are results, update the list of posts
-    	        // and notify the adapter
-    	        //groups.clear();
-      	  	
-	    			for (ParseObject user : userList) {
-	        	
-	    				addUser(user.get("username").toString());
-	    			}
-    	 
-    	        //((ArrayAdapter<String>)ListView.getAdapter()).notifyDataSetChanged();
-    	      } else {
-    	        Log.d("Post retrieval", "Error: " + e.getMessage());
-    	      }
-    	    }            
-    	  });
     	
+    	
+    	
+
+        // our adapter instance
+        ArrayAdapterItem adapter = new ArrayAdapterItem(this, R.layout.list_view_row_item, ObjectItemData);
+        // create a new ListView, set the adapter and item click listener
+        ListView listViewItems = new ListView(this);
+        listViewItems.setAdapter(adapter);
+        listViewItems.setOnItemClickListener(new OnItemClickListenerListViewItem());
+
+        // put the ListView in the pop up
+        alertDialogStores = new AlertDialog.Builder(GroupPage.this);
+        alertDialogStores
+            .setView(listViewItems)
+            .setTitle("Stores")
+            .show();
+        	
     }
     
-    public void addUser(String userid)
+    public void addUser()
     {
     	String groupid = getIntent().getExtras().getString("groupid").toString();
     	ParseObject usergroup = new ParseObject("User_Groups");
-    	usergroup.put("UserID", userid);
+    	usergroup.put("UserID", "10");
     	usergroup.put("GroupID", groupid);
     	usergroup.put("Admin", false);
     	

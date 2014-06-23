@@ -41,7 +41,7 @@ public final class R {
     }
     public static final class id {
         public static final int acceptedchallenges=0x7f090009;
-        public static final int adduser=0x7f090018;
+        public static final int adduser=0x7f090019;
         public static final int button1=0x7f090008;
         public static final int camera_surface_view=0x7f09000a;
         public static final int challengeNameView=0x7f090002;
@@ -50,8 +50,8 @@ public final class R {
         public static final int grouplayout=0x7f09000f;
         public static final int imageView=0x7f090000;
         public static final int loginButton=0x7f090007;
-        public static final int logoutButton=0x7f090017;
-        public static final int newgroup=0x7f090019;
+        public static final int logoutButton=0x7f090018;
+        public static final int newgroup=0x7f09001a;
         public static final int pager=0x7f090001;
         public static final int photo_button=0x7f09000b;
         public static final int previewEvedince_button=0x7f090004;
@@ -59,13 +59,14 @@ public final class R {
         public static final int scoreView=0x7f090006;
         public static final int tdo=0x7f09000c;
         public static final int textView2=0x7f090005;
+        public static final int textViewItem=0x7f090011;
         public static final int upload_button=0x7f090003;
-        public static final int userDateOfBirth=0x7f090015;
-        public static final int userGender=0x7f090014;
-        public static final int userLocation=0x7f090013;
-        public static final int userName=0x7f090012;
-        public static final int userProfilePicture=0x7f090011;
-        public static final int userRelationship=0x7f090016;
+        public static final int userDateOfBirth=0x7f090016;
+        public static final int userGender=0x7f090015;
+        public static final int userLocation=0x7f090014;
+        public static final int userName=0x7f090013;
+        public static final int userProfilePicture=0x7f090012;
+        public static final int userRelationship=0x7f090017;
     }
     public static final class layout {
         public static final int activity_begin=0x7f030000;
@@ -82,7 +83,8 @@ public final class R {
         public static final int fragment_groups=0x7f03000b;
         public static final int fragment_pending=0x7f03000c;
         public static final int fragment_settings=0x7f03000d;
-        public static final int userdetails=0x7f03000e;
+        public static final int list_view_row_item=0x7f03000e;
+        public static final int userdetails=0x7f03000f;
     }
     public static final class menu {
         public static final int challengemenu=0x7f080000;
