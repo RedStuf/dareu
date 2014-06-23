@@ -46,6 +46,7 @@ public class Accepted extends Fragment {
 
         view = inflater.inflate(R.layout.fragment_accepted, container, false);
         getChallenges();
+        groupid = getActivity().getIntent().getExtras().get("groupid").toString();
         Button button1 = (Button)view.findViewById(R.id.button1);
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,29 +132,31 @@ public class Accepted extends Fragment {
   	  query.findInBackground(new FindCallback<ParseObject>() {
   	 
   	    @Override
-  	    public void done(List<ParseObject> groupList,
+  	    public void done(List<ParseObject> challengeList,
   	        ParseException e) {
   	      if (e == null) {
   	        // If there are results, update the list of posts
   	        // and notify the adapter
   	        //groups.clear();
-	        	
-  	        for (ParseObject group : groupList) {
-  	        	groupid = getActivity().getIntent().getExtras().get("groupid").toString();
-  	        	Log.d("challenge groep id",groupid + " "+ group.getString("GroupId")+" x");
-  	        	if(group.getString("GroupId").equals(groupid))
-  	        	{
-  	        		addChallenge(group.getString("ChallengeName"),group.getString("Description"));
-  	  	        	Log.d("groep",group.getString("ChallengeName")+" is toegevoegd");
-  	        	}
+    	  	if(challengeList.size() > 0)
+	  		{
+  	    		if(challengeList.get(0).getString("GroupId").equals(groupid))
+  	    		{
+  	    			for (ParseObject challenge : challengeList) {
   	        	
-  	        }
+  	    				Log.d("challenge groep id",groupid + " "+ challenge.getString("GroupId")+" x");
+  	        	
+	  	        		addChallenge(challenge.getString("ChallengeName"),challenge.getString("Description"));
+	  	  	        	Log.d("groep",challenge.getString("ChallengeName")+" is toegevoegd");
+	  	        	}
+	  	        }
+	  		}
   	 
   	        //((ArrayAdapter<String>)ListView.getAdapter()).notifyDataSetChanged();
   	      } else {
   	        Log.d("Post retrieval", "Error: " + e.getMessage());
   	      }
-	        	Log.d("groep",Arrays.toString(groupList.toArray())+" is toegevoegd");
+	        	Log.d("groep",Arrays.toString(challengeList.toArray())+" is toegevoegd");
   	        //adapter.notifyDataSetChanged();;
   	    }            
   	  });

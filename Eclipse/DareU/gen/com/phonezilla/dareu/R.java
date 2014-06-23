@@ -41,6 +41,7 @@ public final class R {
     }
     public static final class id {
         public static final int acceptedchallenges=0x7f090009;
+        public static final int adduser=0x7f090018;
         public static final int button1=0x7f090008;
         public static final int camera_surface_view=0x7f09000a;
         public static final int challengeNameView=0x7f090002;
@@ -50,7 +51,6 @@ public final class R {
         public static final int imageView=0x7f090000;
         public static final int loginButton=0x7f090007;
         public static final int logoutButton=0x7f090017;
-        public static final int newchallenge=0x7f090018;
         public static final int newgroup=0x7f090019;
         public static final int pager=0x7f090001;
         public static final int photo_button=0x7f09000b;

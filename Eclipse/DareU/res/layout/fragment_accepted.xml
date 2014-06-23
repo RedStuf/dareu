@@ -13,13 +13,13 @@
         tools:context="com.phonezilla.dareu.schermen.fragments.Challenges"
         >
 
-         <Spinner
-        android:id="@+id/button1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:textSize="30dp" 
-        />
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="New Challenge"
+            android:gravity="center_horizontal"
+            android:textSize="30dp"/>
 
     </LinearLayout>
     <ScrollView 

@@ -73,7 +73,6 @@ public class MainActivity extends FragmentActivity implements TabListener {
         actionbar.addTab(tab2);
         actionbar.addTab(tab3);
 
-        //Parse.initialize(this, "jO1gEQOmHYCbpI9S05t2v4jfgAhnWglBTx4Tma8m", "nylyg1NjpI5NcW4bOz74xNebQbEEDF9OctbTj5qI");
     }
     
     @Override
