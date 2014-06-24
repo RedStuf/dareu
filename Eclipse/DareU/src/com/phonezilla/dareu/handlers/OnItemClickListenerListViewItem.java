@@ -30,8 +30,8 @@ public class OnItemClickListenerListViewItem implements OnItemClickListener {
          
         // just toast it
         Toast.makeText(context, "Item: " + listItemText + ", Item ID: " + listItemId, Toast.LENGTH_SHORT).show();
- 
-        ((GroupPage) context).addUser();
+        
+        ((GroupPage) context).addUser(listItemId);
          
     }
      

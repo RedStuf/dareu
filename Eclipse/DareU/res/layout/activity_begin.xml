@@ -1,27 +1,84 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#000"
+    android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-
-    tools:context="com.phonezilla.dareu.Beginscherm"
-    android:background="#000">
-    <TextView
-        android:text=""
-        android:textSize="50dp"
-        android:gravity="center"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+    android:orientation="vertical"
+    tools:context="com.phonezilla.dareu.Beginscherm" >
 
     <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:id="@+id/imageView"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/stamp2" />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/stamp2" 
+        android:layout_weight="1"/>
 
-</RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Please Log in. If you dont have a account yet just enter something in the login field"
+            android:textColor="@color/whitetext"
+            android:textSize="12dp" />
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Username"
+            android:textColor="@color/whitetext"
+            android:textSize="12dp" />
+
+        <EditText
+            android:id="@+id/usernamefield"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#cfcfcf"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:textColor="@color/whitetext" >
+
+            <requestFocus />
+        </EditText>
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Password"
+            android:textColor="@color/whitetext"
+            android:textSize="12dp" />
+
+        <EditText
+            android:id="@+id/passwordfield"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#cfcfcf"
+            android:ems="10"
+            android:inputType="textPassword" />
+
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center"
+            android:background="#cfcfcf"
+            android:text="Login" />
+        
+    </LinearLayout>
+
+</LinearLayout>

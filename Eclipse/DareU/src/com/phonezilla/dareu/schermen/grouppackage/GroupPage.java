@@ -1,6 +1,8 @@
 package com.phonezilla.dareu.schermen.grouppackage;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import android.app.ActionBar;
 import android.app.ActionBar.TabListener;
@@ -12,15 +14,19 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.SaveCallback;
+import com.phonezilla.dareu.Beginscherm;
 import com.phonezilla.dareu.R;
 import com.phonezilla.dareu.handlers.ArrayAdapterItem;
 import com.phonezilla.dareu.handlers.OnItemClickListenerListViewItem;
@@ -32,7 +38,7 @@ import com.phonezilla.dareu.schermen.grouppackage.fragments.Pending;
 
 public class GroupPage extends FragmentActivity implements TabListener {
 
-	public static ArrayList<User> ObjectItemData = new ArrayList<User>();
+	public static ArrayList<User> users = new ArrayList<User>();
     ActionBar actionbar;
     ViewPager pager;
     public AlertDialog.Builder alertDialogStores;
@@ -85,13 +91,32 @@ public class GroupPage extends FragmentActivity implements TabListener {
     
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.challengemenu, menu);
+    	final Menu menu1 = menu;
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("User_Groups");
+        query.whereEqualTo("UserID", Beginscherm.userid);
+        query.whereEqualTo("GroupID", getIntent().getExtras().get("groupid"));
+        query.whereEqualTo("Admin", true);
+        
+  	  	query.findInBackground(new FindCallback<ParseObject>() {
+  	 
+  	    @Override
+  	    public void done(List<ParseObject> userList,
+  	        ParseException e) {
+  	      if (e == null) {
+  	        if(userList.size() >0)
+  	        {
+  	          MenuInflater inflater = getMenuInflater();
+  	          inflater.inflate(R.menu.challengemenu, menu1);
+  	        }
+  	      } else {
+  	        Log.d("Post retrieval", "Error: " + e.getMessage());
+  	      }
+  	    }            
+  	  });
         return true;
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
         switch (item.getItemId()) {
             case R.id.adduser:
                 showUserScreen();
@@ -102,31 +127,22 @@ public class GroupPage extends FragmentActivity implements TabListener {
     }
     public void showUserScreen()
     {
-    	
-    	
-    	
-
-        // our adapter instance
-        ArrayAdapterItem adapter = new ArrayAdapterItem(this, R.layout.list_view_row_item, ObjectItemData);
-        // create a new ListView, set the adapter and item click listener
+        ArrayAdapterItem adapter = new ArrayAdapterItem(this, R.layout.list_view_row_item, users);
+        
         ListView listViewItems = new ListView(this);
         listViewItems.setAdapter(adapter);
         listViewItems.setOnItemClickListener(new OnItemClickListenerListViewItem());
-
-        // put the ListView in the pop up
+        
         alertDialogStores = new AlertDialog.Builder(GroupPage.this);
-        alertDialogStores
-            .setView(listViewItems)
-            .setTitle("Stores")
-            .show();
+        alertDialogStores.setView(listViewItems).setTitle("Users").show();
         	
     }
     
-    public void addUser()
+    public void addUser(String userid)
     {
     	String groupid = getIntent().getExtras().getString("groupid").toString();
     	ParseObject usergroup = new ParseObject("User_Groups");
-    	usergroup.put("UserID", "10");
+    	usergroup.put("UserID", userid);
     	usergroup.put("GroupID", groupid);
     	usergroup.put("Admin", false);
     	
