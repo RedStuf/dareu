@@ -2,4 +2,6 @@
 <resources>
     <color name="maincolor">#9e9e9e</color>
     <color name="whitetext">#fff</color>
+    <color name="backgroundcolor">#4C4C52</color>
+    <color name="listbackground">#8C8C8F</color>
 </resources>

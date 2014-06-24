@@ -224,14 +224,16 @@ public class Groups extends Fragment {
         TextView t1 = new TextView(getActivity());
         TextView t2 = new TextView(getActivity());
         ImageView image = new ImageView(getActivity());
-        int color = Color.argb(255, 40, 40, 40);   
-        
-        ll.setBackgroundColor(color);
+
+        ll.setBackgroundResource(R.color.listbackground);
         ll.setMinimumHeight(MainActivity.GROUPLAYOUTHEIGHT);
         ll.setWeightSum(1);
-
-        ll2.setOrientation(LinearLayout.VERTICAL);
+        ll.setPadding(30, 0, 0, 0);
+        params.setMargins(0, 0, 0, 5);
+        ll.setLayoutParams(params);
         
+        ll2.setOrientation(LinearLayout.VERTICAL);
+        t1.setTextColor(Color.WHITE);
         t1.setText(name);
         t2.setText("description");
         
@@ -246,21 +248,8 @@ public class Groups extends Fragment {
         ll2.addView(t2);
         ll.addView(ll1);
         ll.addView(ll2);
-        ll.setPadding(30, 0, 0, 0);
-        params.setMargins(0, 0, 0, 5);
-        ll.setLayoutParams(params);
-        /*ll.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-            	
-            	Intent intent = new Intent(getActivity(),GroupPage.class);
-                Log.d("groupid",tempid+"");
-                intent.putExtra("groupid",tempid);
-                startActivity(intent);
-                
-            }
-        });
-        */
+        
+        
         ll.setOnClickListener(new KlikLuisteraar(groupid));
         LinearLayout layout = (LinearLayout) view.findViewById(R.id.grouplayout);
         ll.setMinimumWidth(layout.getWidth());

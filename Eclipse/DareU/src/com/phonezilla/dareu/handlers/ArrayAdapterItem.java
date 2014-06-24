@@ -4,9 +4,6 @@ package com.phonezilla.dareu.handlers;
 
 import java.util.ArrayList;
 
-import com.phonezilla.dareu.R;
-import com.phonezilla.dareu.objects.User;
-
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -14,15 +11,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
+import com.phonezilla.dareu.R;
+import com.phonezilla.dareu.objects.Collection;
  
 // here's our beautiful adapter
-public class ArrayAdapterItem extends ArrayAdapter<User> {
+public class ArrayAdapterItem extends ArrayAdapter<Collection> {
  
     Context mContext;
     int layoutResourceId;
-    ArrayList<User> data = null;
+    ArrayList<Collection> data = null;
  
-    public ArrayAdapterItem(Context mContext, int layoutResourceId, ArrayList<User> data) {
+    public ArrayAdapterItem(Context mContext, int layoutResourceId, ArrayList<Collection> data) {
  
         super(mContext, layoutResourceId, data);
          
@@ -30,6 +30,7 @@ public class ArrayAdapterItem extends ArrayAdapter<User> {
         this.mContext = mContext;
         this.data = data;
     }
+    
  
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -47,12 +48,13 @@ public class ArrayAdapterItem extends ArrayAdapter<User> {
         }
          
         // object item based on the position
-        User objectItem = data.get(position);
+        Collection objectItem = data.get(position);
          
         // get the TextView and then set the text (item name) and tag (item ID) values
         TextView textViewItem = (TextView) convertView.findViewById(R.id.textViewItem);
         textViewItem.setText(objectItem.itemName);
         textViewItem.setTag(objectItem.itemId);
+        
  
         return convertView;
          

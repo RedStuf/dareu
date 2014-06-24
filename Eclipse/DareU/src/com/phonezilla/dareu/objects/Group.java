@@ -1,17 +1,10 @@
 package com.phonezilla.dareu.objects;
 
-public class Group {
-	
-	String name;
-	public Group(String name)
-	{
-		this.name = name;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
+public class Group extends Collection {
+
+	public Group(String itemId, String itemName, String itemdesc) {
+		super(itemId, itemName, itemdesc);
+		// TODO Auto-generated constructor stub
 	}
 	
 }

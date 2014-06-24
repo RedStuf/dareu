@@ -139,7 +139,7 @@ public class Beginscherm extends Activity {
 	  	      if (e == null) {
 	  	    	  for(ParseUser user : userList)
 	  	    	  {
-	  	    		  GroupPage.users.add(new User(user.getObjectId().toString(),user.get("username").toString()));
+	  	    		  GroupPage.users.add(new User(user.getObjectId().toString(),user.get("username").toString(), null));
 	  	    	  }
 	  	        
 	  	      } else {

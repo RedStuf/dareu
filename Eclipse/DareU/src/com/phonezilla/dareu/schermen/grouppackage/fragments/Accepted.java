@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -33,6 +34,7 @@ public class Accepted extends Fragment {
     private String groupid;
     private final int LAYOUTHEIGHT = 100;
     private final int DESCRIPTIONLENGTH = 250;
+    LinearLayout layout;
 
     public Accepted() {
         // Required empty public constructor
@@ -45,7 +47,8 @@ public class Accepted extends Fragment {
         // Inflate the layout for this fragment
 
         view = inflater.inflate(R.layout.fragment_accepted, container, false);
-        getChallenges();
+        
+        layout = (LinearLayout) view.findViewById(R.id.acceptedchallenges);
         groupid = getActivity().getIntent().getExtras().get("groupid").toString();
         Button button1 = (Button)view.findViewById(R.id.button1);
         button1.setOnClickListener(new View.OnClickListener() {
@@ -54,6 +57,7 @@ public class Accepted extends Fragment {
         		makeChallenge();
         	}
         });
+        getChallenges();
         return view;
     }
     public void makeChallenge()
@@ -126,8 +130,9 @@ public class Accepted extends Fragment {
     }
     public void getChallenges()
     {
+    	layout.removeAllViews();
     	ParseQuery<ParseObject> query = ParseQuery.getQuery("Challenges");
-        
+        query.whereEqualTo("GroupId", groupid);
   	  // Run the query  
   	  query.findInBackground(new FindCallback<ParseObject>() {
   	 
@@ -140,17 +145,16 @@ public class Accepted extends Fragment {
   	        //groups.clear();
     	  	if(challengeList.size() > 0)
 	  		{
-  	    		if(challengeList.get(0).getString("GroupId").equals(groupid))
-  	    		{
   	    			for (ParseObject challenge : challengeList) {
-  	        	
   	    				Log.d("challenge groep id",groupid + " "+ challenge.getString("GroupId")+" x");
-  	        	
 	  	        		addChallenge(challenge.getString("ChallengeName"),challenge.getString("Description"));
 	  	  	        	Log.d("groep",challenge.getString("ChallengeName")+" is toegevoegd");
 	  	        	}
-	  	        }
 	  		}
+    	  	else 
+    	  	{
+    	  		Toast.makeText(getActivity(),challengeList.size()+"", Toast.LENGTH_SHORT).show();
+    	  	}
   	 
   	        //((ArrayAdapter<String>)ListView.getAdapter()).notifyDataSetChanged();
   	      } else {
@@ -165,14 +169,17 @@ public class Accepted extends Fragment {
     private void addChallenge(String name,String description) {
             
             LinearLayout ll = new LinearLayout(getActivity());
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
             
             TextView t1 = new TextView(getActivity());
             TextView t2 = new TextView(getActivity());
-            int color = Color.argb(255, 40, 40, 40);   
             
-            ll.setBackgroundColor(color);
-            ll.setMinimumHeight(LAYOUTHEIGHT);
+            ll.setBackgroundResource(R.color.listbackground);
+            ll.setMinimumHeight(MainActivity.GROUPLAYOUTHEIGHT);
             ll.setWeightSum(1);
+            ll.setPadding(30, 0, 0, 0);
+            params.setMargins(0, 0, 0, 5);
+            ll.setLayoutParams(params);
 
             ll.setOrientation(LinearLayout.VERTICAL);
             
@@ -185,7 +192,7 @@ public class Accepted extends Fragment {
                 public void onClick(View view) {
                 }
             });
-            LinearLayout layout = (LinearLayout) view.findViewById(R.id.acceptedchallenges);
+            
             ll.setMinimumWidth(layout.getWidth());
             if(layout != null)
                 layout.addView(ll);

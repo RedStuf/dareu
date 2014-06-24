@@ -30,6 +30,7 @@ import com.phonezilla.dareu.Beginscherm;
 import com.phonezilla.dareu.R;
 import com.phonezilla.dareu.handlers.ArrayAdapterItem;
 import com.phonezilla.dareu.handlers.OnItemClickListenerListViewItem;
+import com.phonezilla.dareu.objects.Collection;
 import com.phonezilla.dareu.objects.User;
 import com.phonezilla.dareu.schermen.grouppackage.fragments.Accepted;
 import com.phonezilla.dareu.schermen.grouppackage.fragments.Completed;
@@ -38,7 +39,7 @@ import com.phonezilla.dareu.schermen.grouppackage.fragments.Pending;
 
 public class GroupPage extends FragmentActivity implements TabListener {
 
-	public static ArrayList<User> users = new ArrayList<User>();
+	public static ArrayList<Collection> users = new ArrayList<Collection>();
     ActionBar actionbar;
     ViewPager pager;
     public AlertDialog.Builder alertDialogStores;
