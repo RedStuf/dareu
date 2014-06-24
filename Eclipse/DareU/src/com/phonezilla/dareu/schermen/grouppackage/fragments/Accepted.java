@@ -49,7 +49,6 @@ public class Accepted extends Fragment {
         view = inflater.inflate(R.layout.fragment_accepted, container, false);
         
         layout = (LinearLayout) view.findViewById(R.id.acceptedchallenges);
-        groupid = getActivity().getIntent().getExtras().get("groupid").toString();
         Button button1 = (Button)view.findViewById(R.id.button1);
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,6 +130,7 @@ public class Accepted extends Fragment {
     public void getChallenges()
     {
     	layout.removeAllViews();
+        groupid = getActivity().getIntent().getExtras().get("groupid").toString();
     	ParseQuery<ParseObject> query = ParseQuery.getQuery("Challenges");
         query.whereEqualTo("GroupId", groupid);
   	  // Run the query  
