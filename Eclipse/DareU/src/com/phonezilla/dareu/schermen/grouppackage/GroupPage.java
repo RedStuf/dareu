@@ -1,12 +1,7 @@
 package com.phonezilla.dareu.schermen.grouppackage;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
-import Objects.ArrayAdapterItem;
-import Objects.OnItemClickListenerListViewItem;
-import Objects.User;
 import android.app.ActionBar;
 import android.app.ActionBar.TabListener;
 import android.app.AlertDialog;
@@ -17,20 +12,19 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
-import com.parse.ParseQuery;
-import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.phonezilla.dareu.R;
+import com.phonezilla.dareu.handlers.ArrayAdapterItem;
+import com.phonezilla.dareu.handlers.OnItemClickListenerListViewItem;
+import com.phonezilla.dareu.objects.User;
 import com.phonezilla.dareu.schermen.grouppackage.fragments.Accepted;
 import com.phonezilla.dareu.schermen.grouppackage.fragments.Completed;
 import com.phonezilla.dareu.schermen.grouppackage.fragments.Pending;

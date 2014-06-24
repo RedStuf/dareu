@@ -2,7 +2,6 @@ package com.phonezilla.dareu;
 
 import java.util.List;
 
-import Objects.User;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +14,7 @@ import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.phonezilla.dareu.objects.User;
 import com.phonezilla.dareu.schermen.MainActivity;
 import com.phonezilla.dareu.schermen.grouppackage.GroupPage;
 
@@ -43,7 +43,6 @@ public class Beginscherm extends Activity {
   	        //groups.clear();
   	    	  Log.d("userListCount", ""+userList.size());
   	    	  for (ParseUser user : userList) {
-  	  	        	
   				GroupPage.ObjectItemData.add(new User(user.getObjectId().toString(),user.get("username").toString()));
   			}
   	 
