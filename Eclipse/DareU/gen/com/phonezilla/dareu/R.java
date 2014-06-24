@@ -52,7 +52,7 @@ public final class R {
         public static final int comp=0x7f09000f;
         public static final int grouplayout=0x7f090011;
         public static final int imageView=0x7f090000;
-        public static final int newgroup=0x7f090015;
+        public static final int newgroup=0x7f090016;
         public static final int pager=0x7f090005;
         public static final int passwordfield=0x7f090003;
         public static final int photo_button=0x7f09000d;
@@ -65,6 +65,7 @@ public final class R {
         public static final int textViewItem=0x7f090013;
         public static final int upload_button=0x7f090007;
         public static final int usernamefield=0x7f090002;
+        public static final int users=0x7f090015;
     }
     public static final class layout {
         public static final int activity_begin=0x7f030000;

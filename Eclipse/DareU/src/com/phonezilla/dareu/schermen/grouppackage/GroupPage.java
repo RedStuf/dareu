@@ -18,6 +18,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -25,6 +28,7 @@ import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.phonezilla.dareu.Beginscherm;
 import com.phonezilla.dareu.R;
@@ -42,6 +46,7 @@ public class GroupPage extends FragmentActivity implements TabListener {
 	public static ArrayList<Collection> users = new ArrayList<Collection>();
     ActionBar actionbar;
     ViewPager pager;
+    public static ArrayList<Collection> currentUsers = new ArrayList<Collection>();
     public AlertDialog.Builder alertDialogStores;
     public GroupPage()
     {
@@ -51,6 +56,7 @@ public class GroupPage extends FragmentActivity implements TabListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        getCurrentUsers();
         pager = (ViewPager) findViewById(R.id.pager);
         pager.setAdapter(new Adapter(getSupportFragmentManager()));
 
@@ -92,11 +98,13 @@ public class GroupPage extends FragmentActivity implements TabListener {
     
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-    	final Menu menu1 = menu;
+    	
+    	MenuInflater inflater = getMenuInflater();
+    	inflater.inflate(R.menu.challengemenu, menu);
         ParseQuery<ParseObject> query = ParseQuery.getQuery("User_Groups");
         query.whereEqualTo("UserID", Beginscherm.userid);
         query.whereEqualTo("GroupID", getIntent().getExtras().get("groupid"));
-        query.whereEqualTo("Admin", true);
+        query.whereEqualTo("Admin", false);
         
   	  	query.findInBackground(new FindCallback<ParseObject>() {
   	 
@@ -106,8 +114,8 @@ public class GroupPage extends FragmentActivity implements TabListener {
   	      if (e == null) {
   	        if(userList.size() >0)
   	        {
-  	          MenuInflater inflater = getMenuInflater();
-  	          inflater.inflate(R.menu.challengemenu, menu1);
+  	        	MenuItem item = (MenuItem)findViewById(R.id.adduser);
+  	        	item.setVisible(false);
   	        }
   	      } else {
   	        Log.d("Post retrieval", "Error: " + e.getMessage());
@@ -120,13 +128,74 @@ public class GroupPage extends FragmentActivity implements TabListener {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.adduser:
+            	showAddUser();
+                return true;
+            case R.id.users:
                 showUserScreen();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
+    public void getCurrentUsers()
+    {
+        currentUsers.clear();
+    	ParseQuery<ParseObject> query = ParseQuery.getQuery("User_Groups");
+        query.whereEqualTo("GroupID", getIntent().getExtras().get("groupid"));
+        query.whereNotEqualTo("UserId", Beginscherm.userid);
+        
+  	  	query.findInBackground(new FindCallback<ParseObject>() {
+  	 
+  	    @Override
+  	    public void done(List<ParseObject> userList,
+  	        ParseException e) {
+  	      if (e == null) {
+  	    	  for(ParseObject user : userList)
+  	    	  {
+  	    		ParseQuery<ParseUser> query = ParseUser.getQuery();
+  	    		query.whereEqualTo("objectId", user.get("UserID"));
+  	    		query.findInBackground(new FindCallback<ParseUser>() {
+  		  		  
+  	  	  	    @Override
+  	  	  	    public void done(List<ParseUser> userList,
+  	  	  	        ParseException e) {
+  	  	  	      if (e == null) {
+  	  	  	    	  for(ParseUser userr : userList)
+  	  	  	    	  {
+  	  	  	    		  currentUsers.add(new User(userr.getObjectId().toString(),userr.get("username").toString(), null));
+  	  	  	    	  }
+  	  	  	      } else {
+  	  	  	        Log.d("Post retrieval", "Error: " + e.getMessage());
+  	  	  	      }
+  	  	  	    }            
+  	  	  	  });
+  	    	  }
+  	      } else {
+  	        Log.d("Post retrieval", "Error: " + e.getMessage());
+  	      }
+  	    }            
+  	  });
+    }
     public void showUserScreen()
+    {
+    	ArrayAdapterItem adapter = new ArrayAdapterItem(this, R.layout.list_view_row_item, currentUsers);
+        
+        ListView listViewItems = new ListView(this);
+        listViewItems.setAdapter(adapter);
+        listViewItems.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+        
+        alertDialogStores = new AlertDialog.Builder(GroupPage.this);
+        alertDialogStores.setView(listViewItems).setTitle("Users").show();
+    }
+    public void showAddUser()
     {
         ArrayAdapterItem adapter = new ArrayAdapterItem(this, R.layout.list_view_row_item, users);
         
@@ -162,6 +231,8 @@ public class GroupPage extends FragmentActivity implements TabListener {
             }
          
           });
+    	Toast.makeText(getApplicationContext(), "User added", Toast.LENGTH_SHORT);
+    	getCurrentUsers();
     	
     }
 

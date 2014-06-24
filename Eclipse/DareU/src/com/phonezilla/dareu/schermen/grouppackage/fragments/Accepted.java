@@ -94,6 +94,8 @@ public class Accepted extends Fragment {
                 challenges.put("ChallengeName", value1);
                 challenges.put("Description", value2);
                 challenges.put("GroupId", groupid);
+                challenges.put("State",0);
+                challenges.put("Acceptees", 0);
                 
                                    
                 // Save the post and return

@@ -15,6 +15,7 @@ import android.widget.Toast;
  */
 public class OnItemClickListenerListViewItem implements OnItemClickListener {
  
+
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
  
@@ -23,7 +24,6 @@ public class OnItemClickListenerListViewItem implements OnItemClickListener {
         String userid = textViewItem.getTag().toString();
          
         ((GroupPage) context).addUser(userid);
-         
     }
      
 }
