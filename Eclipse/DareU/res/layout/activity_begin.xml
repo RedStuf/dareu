@@ -14,8 +14,9 @@
         android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/stamp2" 
-        android:layout_weight="1"/>
+        android:src="@drawable/stamp2"
+        android:layout_marginBottom="20dp" 
+        android:layout_weight="2"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -30,44 +31,43 @@
             android:gravity="center"
             android:text="Please Log in. If you dont have a account yet just enter something in the login field"
             android:textColor="@color/whitetext"
-            android:textSize="12dp" />
+            android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/textView1"
+            android:id="@+id/textView2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="Username"
             android:textColor="@color/whitetext"
-            android:textSize="12dp" />
+            android:textSize="16sp" />
 
         <EditText
             android:id="@+id/usernamefield"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:background="#cfcfcf"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:textColor="@color/whitetext" >
+            android:ems="40"
+            android:inputType="textPersonName" >
 
             <requestFocus />
         </EditText>
 
         <TextView
-            android:id="@+id/textView1"
+            android:id="@+id/textView3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="Password"
             android:textColor="@color/whitetext"
-            android:textSize="12dp" />
+            android:textSize="16sp" />
 
         <EditText
             android:id="@+id/passwordfield"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:background="#cfcfcf"
-            android:ems="10"
+            android:ems="120"
             android:inputType="textPassword" />
 
         <Button

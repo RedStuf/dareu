@@ -1,14 +1,13 @@
 package com.phonezilla.dareu.handlers;
 
-import com.phonezilla.dareu.R;
-import com.phonezilla.dareu.schermen.grouppackage.GroupPage;
-
 import android.content.Context;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.phonezilla.dareu.R;
+import com.phonezilla.dareu.schermen.grouppackage.GroupPage;
  
 /*
  * Here you can control what to do next when the user selects an item
@@ -23,7 +22,8 @@ public class OnItemClickListenerListViewItem implements OnItemClickListener {
         TextView textViewItem = ((TextView) view.findViewById(R.id.textViewItem));
         String userid = textViewItem.getTag().toString();
          
-        ((GroupPage) context).addUser(userid);
-    }
-     
+        ((GroupPage) context).checkUser(userid);
+        
+        
+    }     
 }

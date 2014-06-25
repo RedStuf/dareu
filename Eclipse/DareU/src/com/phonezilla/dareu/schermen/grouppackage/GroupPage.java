@@ -8,6 +8,7 @@ import android.app.ActionBar;
 import android.app.ActionBar.TabListener;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -47,7 +48,8 @@ public class GroupPage extends FragmentActivity implements TabListener {
     ActionBar actionbar;
     ViewPager pager;
     public static ArrayList<Collection> currentUsers = new ArrayList<Collection>();
-    public AlertDialog.Builder alertDialogStores;
+    public AlertDialog alertDialog;
+    private String groupid;
     public GroupPage()
     {
 
@@ -97,7 +99,7 @@ public class GroupPage extends FragmentActivity implements TabListener {
     }
     
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(final Menu menu) {
     	
     	MenuInflater inflater = getMenuInflater();
     	inflater.inflate(R.menu.challengemenu, menu);
@@ -114,7 +116,7 @@ public class GroupPage extends FragmentActivity implements TabListener {
   	      if (e == null) {
   	        if(userList.size() >0)
   	        {
-  	        	MenuItem item = (MenuItem)findViewById(R.id.adduser);
+  	        	MenuItem item = menu.findItem(R.id.adduser);
   	        	item.setVisible(false);
   	        }
   	      } else {
@@ -192,8 +194,8 @@ public class GroupPage extends FragmentActivity implements TabListener {
 			}
 		});
         
-        alertDialogStores = new AlertDialog.Builder(GroupPage.this);
-        alertDialogStores.setView(listViewItems).setTitle("Users").show();
+        AlertDialog.Builder dialog = new AlertDialog.Builder(GroupPage.this);
+        dialog.setView(listViewItems).setTitle("Users").show();
     }
     public void showAddUser()
     {
@@ -202,38 +204,64 @@ public class GroupPage extends FragmentActivity implements TabListener {
         ListView listViewItems = new ListView(this);
         listViewItems.setAdapter(adapter);
         listViewItems.setOnItemClickListener(new OnItemClickListenerListViewItem());
-        
-        alertDialogStores = new AlertDialog.Builder(GroupPage.this);
-        alertDialogStores.setView(listViewItems).setTitle("Users").show();
+        AlertDialog.Builder dialog = new AlertDialog.Builder(GroupPage.this);
+        dialog.setView(listViewItems).setTitle("Users").show();
+        final AlertDialog alertDialog = dialog.create();
+     
         	
     }
-    
+    public void checkUser(final String userid)
+    {
+    	groupid = getIntent().getExtras().getString("groupid").toString();
+    	ParseQuery<ParseObject> query = ParseQuery.getQuery("User_Groups");
+        query.whereEqualTo("GroupID", groupid);
+        query.whereEqualTo("UserID", userid);
+        
+  	  	query.findInBackground(new FindCallback<ParseObject>() {
+  	 
+  	    @Override
+  	    public void done(List<ParseObject> userList,
+  	        ParseException e) {
+  	      if (e == null) {
+  	    	  Log.d("userlist size", userList.size()+" users");
+  	    	  if(userList.size() == 0)
+  	    	  {
+  	    		  addUser(userid);
+  	    		  
+  	    	  }
+  	    	  else
+  	    	  {
+  	  	      		Toast.makeText(getApplicationContext(), "User already in group", Toast.LENGTH_SHORT).show();
+  	    	  }
+  	      } else {
+  	        Log.d("Post retrieval", "Error: " + e.getMessage());
+  	      }
+  	    }            
+  	  });
+
+    }
     public void addUser(String userid)
     {
-    	String groupid = getIntent().getExtras().getString("groupid").toString();
-    	ParseObject usergroup = new ParseObject("User_Groups");
-    	usergroup.put("UserID", userid);
-    	usergroup.put("GroupID", groupid);
-    	usergroup.put("Admin", false);
-    	
-    	usergroup.saveInBackground(new SaveCallback () {
-            
-            @Override
-            public void done(ParseException e) {
-              if (e == null) {
-              	setResult(RESULT_OK);
-              } else {
-                Toast.makeText(getApplicationContext(),
-                "Error saving: " + e.getMessage(),
-                       Toast.LENGTH_SHORT)
-                       .show();
+      	ParseObject usergroup = new ParseObject("User_Groups");
+      	usergroup.put("UserID", userid);
+      	usergroup.put("GroupID", groupid);
+      	usergroup.put("Admin", false);
+      	usergroup.saveInBackground(new SaveCallback () {
+              
+              @Override
+              public void done(ParseException e) {
+                if (e == null) {
+                	setResult(RESULT_OK);
+  	  	    		getCurrentUsers();
+  	  	      	Toast.makeText(getApplicationContext(), "User added", Toast.LENGTH_SHORT).show();
+                } else {
+                  Toast.makeText(getApplicationContext(),
+                  "Error saving: " + e.getMessage(),
+                         Toast.LENGTH_SHORT)
+                         .show();
+                }
               }
-            }
-         
-          });
-    	Toast.makeText(getApplicationContext(), "User added", Toast.LENGTH_SHORT);
-    	getCurrentUsers();
-    	
+            });
     }
 
     @Override

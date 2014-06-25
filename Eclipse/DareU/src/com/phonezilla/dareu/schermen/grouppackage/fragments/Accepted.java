@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -34,6 +35,7 @@ public class Accepted extends Fragment {
     private String groupid;
     private final int LAYOUTHEIGHT = 100;
     private final int DESCRIPTIONLENGTH = 250;
+    Context context;
     LinearLayout layout;
 
     public Accepted() {
@@ -47,7 +49,7 @@ public class Accepted extends Fragment {
         // Inflate the layout for this fragment
 
         view = inflater.inflate(R.layout.fragment_accepted, container, false);
-        
+        context = getActivity();
         layout = (LinearLayout) view.findViewById(R.id.acceptedchallenges);
         Button button1 = (Button)view.findViewById(R.id.button1);
         button1.setOnClickListener(new View.OnClickListener() {
@@ -61,18 +63,18 @@ public class Accepted extends Fragment {
     }
     public void makeChallenge()
     {
-    	AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+    	AlertDialog.Builder alert = new AlertDialog.Builder(context);
 
         alert.setTitle("Maak een Challenge");
         alert.setMessage("Voer een naam,description in");
 
 //Set an EditText view to get user input
        
-        final EditText input1 = new EditText(getActivity());
+        final EditText input1 = new EditText(context);
         input1.setFilters(new InputFilter[] {new InputFilter.LengthFilter(MainActivity.MAXLETTERS)});
-        final EditText input2 = new EditText(getActivity());
+        final EditText input2 = new EditText(context);
         input2.setFilters(new InputFilter[] {new InputFilter.LengthFilter(DESCRIPTIONLENGTH)});
-        LinearLayout ll = new LinearLayout(getActivity());
+        LinearLayout ll = new LinearLayout(context);
         ll.setOrientation(LinearLayout.VERTICAL);
         ll.addView(input1);
         ll.addView(input2);
@@ -106,7 +108,7 @@ public class Accepted extends Fragment {
                     if (e == null) {
                     	getActivity().setResult(getActivity().RESULT_OK);
                     } else {
-                      Toast.makeText(getActivity().getApplicationContext(),
+                      Toast.makeText(context.getApplicationContext(),
                       "Error saving: " + e.getMessage(),
                              Toast.LENGTH_SHORT)
                              .show();
@@ -153,10 +155,6 @@ public class Accepted extends Fragment {
 	  	  	        	Log.d("groep",challenge.getString("ChallengeName")+" is toegevoegd");
 	  	        	}
 	  		}
-    	  	else 
-    	  	{
-    	  		Toast.makeText(getActivity(),challengeList.size()+"", Toast.LENGTH_SHORT).show();
-    	  	}
   	 
   	        //((ArrayAdapter<String>)ListView.getAdapter()).notifyDataSetChanged();
   	      } else {
@@ -170,11 +168,11 @@ public class Accepted extends Fragment {
 
     private void addChallenge(String name,String description) {
             
-            LinearLayout ll = new LinearLayout(getActivity());
+            LinearLayout ll = new LinearLayout(context);
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
             
-            TextView t1 = new TextView(getActivity());
-            TextView t2 = new TextView(getActivity());
+            TextView t1 = new TextView(context);
+            TextView t2 = new TextView(context);
             
             ll.setBackgroundResource(R.color.listbackground);
             ll.setMinimumHeight(MainActivity.GROUPLAYOUTHEIGHT);
