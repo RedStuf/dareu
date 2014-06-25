@@ -8,22 +8,22 @@ import android.widget.TextView;
 
 import com.phonezilla.dareu.R;
 import com.phonezilla.dareu.schermen.grouppackage.GroupPage;
- 
+
 /*
  * Here you can control what to do next when the user selects an item
  */
 public class OnItemClickListenerListViewItem implements OnItemClickListener {
- 
 
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
- 
-        Context context = view.getContext();
-        TextView textViewItem = ((TextView) view.findViewById(R.id.textViewItem));
-        String userid = textViewItem.getTag().toString();
-         
-        ((GroupPage) context).checkUser(userid);
-        
-        
-    }     
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position,
+			long id) {
+
+		Context context = view.getContext();
+		TextView textViewItem = ((TextView) view
+				.findViewById(R.id.textViewItem));
+		String userid = textViewItem.getTag().toString();
+
+		((GroupPage) context).checkUser(userid);
+
+	}
 }

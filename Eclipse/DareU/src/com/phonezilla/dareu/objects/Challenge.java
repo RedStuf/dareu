@@ -6,5 +6,5 @@ public class Challenge extends Collection {
 		super(itemId, itemName, itemdesc);
 		// TODO Auto-generated constructor stub
 	}
-	
+
 }

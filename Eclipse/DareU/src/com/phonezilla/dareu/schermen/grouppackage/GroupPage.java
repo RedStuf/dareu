@@ -41,272 +41,267 @@ import com.phonezilla.dareu.schermen.grouppackage.fragments.Accepted;
 import com.phonezilla.dareu.schermen.grouppackage.fragments.Completed;
 import com.phonezilla.dareu.schermen.grouppackage.fragments.Pending;
 
-
 public class GroupPage extends FragmentActivity implements TabListener {
 
 	public static ArrayList<Collection> users = new ArrayList<Collection>();
-    ActionBar actionbar;
-    ViewPager pager;
-    public static ArrayList<Collection> currentUsers = new ArrayList<Collection>();
-    public AlertDialog alertDialog;
-    private String groupid;
-    public GroupPage()
-    {
+	ActionBar actionbar;
+	ViewPager pager;
+	public static ArrayList<Collection> currentUsers = new ArrayList<Collection>();
+	public AlertDialog alertDialog;
+	private String groupid;
 
-    }
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        getCurrentUsers();
-        pager = (ViewPager) findViewById(R.id.pager);
-        pager.setAdapter(new Adapter(getSupportFragmentManager()));
+	public GroupPage() {
 
-        pager.setOnPageChangeListener(new ViewPager.OnPageChangeListener()
-        {
+	}
 
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+		getCurrentUsers();
+		pager = (ViewPager) findViewById(R.id.pager);
+		pager.setAdapter(new Adapter(getSupportFragmentManager()));
 
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                actionbar.setSelectedNavigationItem(position);
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
-        actionbar=getActionBar();
-        actionbar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-
-        ActionBar.Tab tab1= actionbar.newTab();
-        tab1.setText("Accepted");
-        tab1.setTabListener(this);
-        ActionBar.Tab tab2= actionbar.newTab();
-        tab2.setText("Pending");
-        tab2.setTabListener(this);
-        ActionBar.Tab tab3= actionbar.newTab();
-        tab3.setText("Completed");
-        tab3.setTabListener(this);
-
-        actionbar.addTab(tab1);
-        actionbar.addTab(tab2);
-        actionbar.addTab(tab3);
-    }
-    
-    @Override
-    public boolean onCreateOptionsMenu(final Menu menu) {
-    	
-    	MenuInflater inflater = getMenuInflater();
-    	inflater.inflate(R.menu.challengemenu, menu);
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("User_Groups");
-        query.whereEqualTo("UserID", Beginscherm.userid);
-        query.whereEqualTo("GroupID", getIntent().getExtras().get("groupid"));
-        query.whereEqualTo("Admin", false);
-        
-  	  	query.findInBackground(new FindCallback<ParseObject>() {
-  	 
-  	    @Override
-  	    public void done(List<ParseObject> userList,
-  	        ParseException e) {
-  	      if (e == null) {
-  	        if(userList.size() >0)
-  	        {
-  	        	MenuItem item = menu.findItem(R.id.adduser);
-  	        	item.setVisible(false);
-  	        }
-  	      } else {
-  	        Log.d("Post retrieval", "Error: " + e.getMessage());
-  	      }
-  	    }            
-  	  });
-        return true;
-    }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.adduser:
-            	showAddUser();
-                return true;
-            case R.id.users:
-                showUserScreen();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-    public void getCurrentUsers()
-    {
-        currentUsers.clear();
-    	ParseQuery<ParseObject> query = ParseQuery.getQuery("User_Groups");
-        query.whereEqualTo("GroupID", getIntent().getExtras().get("groupid"));
-        query.whereNotEqualTo("UserId", Beginscherm.userid);
-        
-  	  	query.findInBackground(new FindCallback<ParseObject>() {
-  	 
-  	    @Override
-  	    public void done(List<ParseObject> userList,
-  	        ParseException e) {
-  	      if (e == null) {
-  	    	  for(ParseObject user : userList)
-  	    	  {
-  	    		ParseQuery<ParseUser> query = ParseUser.getQuery();
-  	    		query.whereEqualTo("objectId", user.get("UserID"));
-  	    		query.findInBackground(new FindCallback<ParseUser>() {
-  		  		  
-  	  	  	    @Override
-  	  	  	    public void done(List<ParseUser> userList,
-  	  	  	        ParseException e) {
-  	  	  	      if (e == null) {
-  	  	  	    	  for(ParseUser userr : userList)
-  	  	  	    	  {
-  	  	  	    		  currentUsers.add(new User(userr.getObjectId().toString(),userr.get("username").toString(), null));
-  	  	  	    	  }
-  	  	  	      } else {
-  	  	  	        Log.d("Post retrieval", "Error: " + e.getMessage());
-  	  	  	      }
-  	  	  	    }            
-  	  	  	  });
-  	    	  }
-  	      } else {
-  	        Log.d("Post retrieval", "Error: " + e.getMessage());
-  	      }
-  	    }            
-  	  });
-    }
-    public void showUserScreen()
-    {
-    	ArrayAdapterItem adapter = new ArrayAdapterItem(this, R.layout.list_view_row_item, currentUsers);
-        
-        ListView listViewItems = new ListView(this);
-        listViewItems.setAdapter(adapter);
-        listViewItems.setOnItemClickListener(new OnItemClickListener() {
+		pager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
-				// TODO Auto-generated method stub
-				
+			public void onPageScrolled(int position, float positionOffset,
+					int positionOffsetPixels) {
+
+			}
+
+			@Override
+			public void onPageSelected(int position) {
+				actionbar.setSelectedNavigationItem(position);
+			}
+
+			@Override
+			public void onPageScrollStateChanged(int state) {
+
 			}
 		});
-        
-        AlertDialog.Builder dialog = new AlertDialog.Builder(GroupPage.this);
-        dialog.setView(listViewItems).setTitle("Users").show();
-    }
-    public void showAddUser()
-    {
-        ArrayAdapterItem adapter = new ArrayAdapterItem(this, R.layout.list_view_row_item, users);
-        
-        ListView listViewItems = new ListView(this);
-        listViewItems.setAdapter(adapter);
-        listViewItems.setOnItemClickListener(new OnItemClickListenerListViewItem());
-        AlertDialog.Builder dialog = new AlertDialog.Builder(GroupPage.this);
-        dialog.setView(listViewItems).setTitle("Users").show();
-        final AlertDialog alertDialog = dialog.create();
-     
-        	
-    }
-    public void checkUser(final String userid)
-    {
-    	groupid = getIntent().getExtras().getString("groupid").toString();
-    	ParseQuery<ParseObject> query = ParseQuery.getQuery("User_Groups");
-        query.whereEqualTo("GroupID", groupid);
-        query.whereEqualTo("UserID", userid);
-        
-  	  	query.findInBackground(new FindCallback<ParseObject>() {
-  	 
-  	    @Override
-  	    public void done(List<ParseObject> userList,
-  	        ParseException e) {
-  	      if (e == null) {
-  	    	  Log.d("userlist size", userList.size()+" users");
-  	    	  if(userList.size() == 0)
-  	    	  {
-  	    		  addUser(userid);
-  	    		  
-  	    	  }
-  	    	  else
-  	    	  {
-  	  	      		Toast.makeText(getApplicationContext(), "User already in group", Toast.LENGTH_SHORT).show();
-  	    	  }
-  	      } else {
-  	        Log.d("Post retrieval", "Error: " + e.getMessage());
-  	      }
-  	    }            
-  	  });
+		actionbar = getActionBar();
+		actionbar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
-    }
-    public void addUser(String userid)
-    {
-      	ParseObject usergroup = new ParseObject("User_Groups");
-      	usergroup.put("UserID", userid);
-      	usergroup.put("GroupID", groupid);
-      	usergroup.put("Admin", false);
-      	usergroup.saveInBackground(new SaveCallback () {
-              
-              @Override
-              public void done(ParseException e) {
-                if (e == null) {
-                	setResult(RESULT_OK);
-  	  	    		getCurrentUsers();
-  	  	      	Toast.makeText(getApplicationContext(), "User added", Toast.LENGTH_SHORT).show();
-                } else {
-                  Toast.makeText(getApplicationContext(),
-                  "Error saving: " + e.getMessage(),
-                         Toast.LENGTH_SHORT)
-                         .show();
-                }
-              }
-            });
-    }
+		ActionBar.Tab tab1 = actionbar.newTab();
+		tab1.setText("Accepted");
+		tab1.setTabListener(this);
+		ActionBar.Tab tab2 = actionbar.newTab();
+		tab2.setText("Pending");
+		tab2.setTabListener(this);
+		ActionBar.Tab tab3 = actionbar.newTab();
+		tab3.setText("Completed");
+		tab3.setTabListener(this);
 
-    @Override
-    public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-        pager.setCurrentItem(tab.getPosition());
-    }
+		actionbar.addTab(tab1);
+		actionbar.addTab(tab2);
+		actionbar.addTab(tab3);
+	}
 
-    @Override
-    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+	@Override
+	public boolean onCreateOptionsMenu(final Menu menu) {
 
-    }
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.challengemenu, menu);
+		ParseQuery<ParseObject> query = ParseQuery.getQuery("User_Groups");
+		query.whereEqualTo("UserID", Beginscherm.userid);
+		query.whereEqualTo("GroupID", getIntent().getExtras().get("groupid"));
+		query.whereEqualTo("Admin", false);
 
-    @Override
-    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+		query.findInBackground(new FindCallback<ParseObject>() {
 
-    }
+			@Override
+			public void done(List<ParseObject> userList, ParseException e) {
+				if (e == null) {
+					if (userList.size() > 0) {
+						MenuItem item = menu.findItem(R.id.adduser);
+						item.setVisible(false);
+					}
+				} else {
+					Log.d("Post retrieval", "Error: " + e.getMessage());
+				}
+			}
+		});
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.adduser:
+			showAddUser();
+			return true;
+		case R.id.users:
+			showUserScreen();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+	}
+
+	public void getCurrentUsers() {
+		currentUsers.clear();
+		ParseQuery<ParseObject> query = ParseQuery.getQuery("User_Groups");
+		query.whereEqualTo("GroupID", getIntent().getExtras().get("groupid"));
+		query.whereNotEqualTo("UserId", Beginscherm.userid);
+
+		query.findInBackground(new FindCallback<ParseObject>() {
+
+			@Override
+			public void done(List<ParseObject> userList, ParseException e) {
+				if (e == null) {
+					for (ParseObject user : userList) {
+						ParseQuery<ParseUser> query = ParseUser.getQuery();
+						query.whereEqualTo("objectId", user.get("UserID"));
+						query.findInBackground(new FindCallback<ParseUser>() {
+
+							@Override
+							public void done(List<ParseUser> userList,
+									ParseException e) {
+								if (e == null) {
+									for (ParseUser userr : userList) {
+										currentUsers.add(new User(userr
+												.getObjectId().toString(),
+												userr.get("username")
+														.toString(), null));
+									}
+								} else {
+									Log.d("Post retrieval",
+											"Error: " + e.getMessage());
+								}
+							}
+						});
+					}
+				} else {
+					Log.d("Post retrieval", "Error: " + e.getMessage());
+				}
+			}
+		});
+	}
+
+	public void showUserScreen() {
+		ArrayAdapterItem adapter = new ArrayAdapterItem(this,
+				R.layout.list_view_row_item, currentUsers);
+
+		ListView listViewItems = new ListView(this);
+		listViewItems.setAdapter(adapter);
+
+		AlertDialog.Builder dialog = new AlertDialog.Builder(GroupPage.this);
+		dialog.setView(listViewItems).setTitle("Users").show();
+	}
+
+	public void showAddUser() {
+		ArrayAdapterItem adapter = new ArrayAdapterItem(this,
+				R.layout.list_view_row_item, users);
+
+		ListView listViewItems = new ListView(this);
+		listViewItems.setAdapter(adapter);
+		listViewItems
+				.setOnItemClickListener(new OnItemClickListenerListViewItem());
+		AlertDialog.Builder dialog = new AlertDialog.Builder(GroupPage.this);
+		dialog.setView(listViewItems).setTitle("Users").show();
+		final AlertDialog alertDialog = dialog.create();
+
+	}
+
+	public void checkUser(final String userid) {
+		try {
+			Thread.sleep(2000);
+
+			groupid = getIntent().getExtras().getString("groupid").toString();
+			ParseQuery<ParseObject> query = ParseQuery.getQuery("User_Groups");
+			query.whereEqualTo("GroupID", groupid);
+			query.whereEqualTo("UserID", userid);
+
+			query.findInBackground(new FindCallback<ParseObject>() {
+
+				@Override
+				public void done(List<ParseObject> userList, ParseException e) {
+					if (e == null) {
+						Log.d("userlist size", userList.size() + " users");
+						if (userList.size() == 0) {
+							addUser(userid);
+
+						} else {
+							Toast.makeText(getApplicationContext(),
+									"User already in group", Toast.LENGTH_SHORT)
+									.show();
+						}
+					} else {
+						Log.d("Post retrieval", "Error: " + e.getMessage());
+					}
+				}
+			});
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void addUser(String userid) {
+		ParseObject usergroup = new ParseObject("User_Groups");
+		usergroup.put("UserID", userid);
+		usergroup.put("GroupID", groupid);
+		usergroup.put("Admin", false);
+		usergroup.saveInBackground(new SaveCallback() {
+
+			@Override
+			public void done(ParseException e) {
+				if (e == null) {
+					setResult(RESULT_OK);
+					getCurrentUsers();
+					Toast.makeText(getApplicationContext(), "User added",
+							Toast.LENGTH_SHORT).show();
+				} else {
+					Toast.makeText(getApplicationContext(),
+							"Error saving: " + e.getMessage(),
+							Toast.LENGTH_SHORT).show();
+				}
+			}
+		});
+	}
+
+	@Override
+	public void onTabSelected(ActionBar.Tab tab,
+			FragmentTransaction fragmentTransaction) {
+		pager.setCurrentItem(tab.getPosition());
+	}
+
+	@Override
+	public void onTabUnselected(ActionBar.Tab tab,
+			FragmentTransaction fragmentTransaction) {
+
+	}
+
+	@Override
+	public void onTabReselected(ActionBar.Tab tab,
+			FragmentTransaction fragmentTransaction) {
+
+	}
 }
 
 class Adapter extends FragmentPagerAdapter {
 
+	public Adapter(FragmentManager fm) {
+		super(fm);
+	}
 
-    public Adapter(FragmentManager fm) {
-        super(fm);
-    }
+	@Override
+	public Fragment getItem(int position) {
+		Fragment fragment = null;
+		if (position == 0) {
+			fragment = new Accepted();
+		}
+		if (position == 1) {
+			fragment = new Pending();
+		}
+		if (position == 2) {
+			fragment = new Completed();
+		}
+		return fragment;
+	}
 
-    @Override
-    public Fragment getItem(int position) {
-        Fragment fragment = null;
-        if(position == 0)
-        {
-            fragment = new Accepted();
-        }
-        if(position == 1)
-        {
-            fragment = new Pending();
-        }
-        if(position == 2)
-        {
-            fragment = new Completed();
-        }
-        return fragment;
-    }
-
-    @Override
-    public int getCount() {
-        return 3;
-    }
+	@Override
+	public int getCount() {
+		return 3;
+	}
 }
