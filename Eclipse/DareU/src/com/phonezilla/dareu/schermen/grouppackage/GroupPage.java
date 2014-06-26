@@ -52,7 +52,7 @@ public class GroupPage extends FragmentActivity implements TabListener {
 	ViewPager pager;
 	public static ArrayList<Collection> currentUsers = new ArrayList<Collection>();
 	public AlertDialog alertDialog;
-	private String groupid;
+	public String groupid;
 	private final int DESCRIPTIONLENGTH = 250;
 
 	public GroupPage() {

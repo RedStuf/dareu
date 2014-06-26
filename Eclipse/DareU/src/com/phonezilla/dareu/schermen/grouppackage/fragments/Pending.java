@@ -4,28 +4,23 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Timer;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.InputFilter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
-import com.parse.SaveCallback;
 import com.phonezilla.dareu.R;
 import com.phonezilla.dareu.schermen.MainActivity;
 import com.phonezilla.dareu.schermen.grouppackage.GroupPage;
@@ -33,8 +28,6 @@ import com.phonezilla.dareu.schermen.grouppackage.GroupPage;
 public class Pending extends Fragment {
 
 	private View view;
-	private String groupid;
-	private final int DESCRIPTIONLENGTH = 250;
 	Context context;
 	LinearLayout layout;
 	Timer timer;
@@ -46,6 +39,7 @@ public class Pending extends Fragment {
 		view = inflater.inflate(R.layout.fragment_pending, container, false);
 		context = getActivity();
 		layout = (LinearLayout) view.findViewById(R.id.challenges);
+		
 		Button button1 = (Button) view.findViewById(R.id.button1);
 		button1.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -72,10 +66,9 @@ public class Pending extends Fragment {
 	}
 	public void getChallenges() {
 		layout.removeAllViews();
-		groupid = getActivity().getIntent().getExtras().get("groupid")
-				.toString();
 		ParseQuery<ParseObject> query = ParseQuery.getQuery("Challenges");
-		query.whereEqualTo("GroupId", groupid);
+		query.whereEqualTo("GroupId", ((GroupPage)getActivity()).groupid);
+		query.whereLessThan("Acceptees", GroupPage.currentUsers.size());
 		query.findInBackground(new FindCallback<ParseObject>() {
 
 			@Override
@@ -83,10 +76,9 @@ public class Pending extends Fragment {
 				if (e == null) {
 					if (challengeList.size() > 0) {
 						for (ParseObject challenge : challengeList) {
-							Log.d("challenge groep id", groupid + " "
+							Log.d("challenge groep id", ((GroupPage)getActivity()).groupid + " "
 									+ challenge.getString("GroupId") + " x");
-							addChallenge(challenge.getString("ChallengeName"),
-									challenge.getString("Description"));
+							addChallenge(challenge.getString("ChallengeName"));
 							Log.d("groep", challenge.getString("ChallengeName")
 									+ " is toegevoegd");
 						}
@@ -99,14 +91,16 @@ public class Pending extends Fragment {
 			}
 		});
 	}
-	private void addChallenge(String name, String description) {
+	private void addChallenge(String name) {
 
 		LinearLayout ll = new LinearLayout(context);
 		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
 				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 
 		TextView t1 = new TextView(context);
-		TextView t2 = new TextView(context);
+		
+		ImageButton accept = new ImageButton(context);
+		ImageButton decline = new ImageButton(context);
 
 		ll.setBackgroundResource(R.color.listbackground);
 		ll.setMinimumHeight(MainActivity.GROUPLAYOUTHEIGHT);
@@ -118,9 +112,7 @@ public class Pending extends Fragment {
 		ll.setOrientation(LinearLayout.VERTICAL);
 
 		t1.setText(name);
-		t2.setText(description);
 		ll.addView(t1);
-		ll.addView(t2);
 		ll.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {

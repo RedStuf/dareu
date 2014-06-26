@@ -33,7 +33,6 @@ import com.phonezilla.dareu.schermen.grouppackage.GroupPage;
 public class Accepted extends Fragment {
 
 	private View view;
-	private String groupid;
 	Context context;
 	LinearLayout layout;
 	Timer timer;
@@ -72,10 +71,8 @@ public class Accepted extends Fragment {
 
 	public void getChallenges() {
 		layout.removeAllViews();
-		groupid = getActivity().getIntent().getExtras().get("groupid")
-				.toString();
 		ParseQuery<ParseObject> query = ParseQuery.getQuery("Challenges");
-		query.whereEqualTo("GroupId", groupid);
+		query.whereEqualTo("GroupId", ((GroupPage)getActivity()).groupid);
 		Log.d("currentusers", GroupPage.currentUsers.size()+"");
 		query.whereGreaterThan("Acceptees", GroupPage.currentUsers.size()/2);
 		query.findInBackground(new FindCallback<ParseObject>() {
@@ -85,10 +82,9 @@ public class Accepted extends Fragment {
 				if (e == null) {
 					if (challengeList.size() > 0) {
 						for (ParseObject challenge : challengeList) {
-							Log.d("challenge groep id", groupid + " "
+							Log.d("challenge groep id", ((GroupPage)getActivity()).groupid + " "
 									+ challenge.getString("GroupId") + " x");
-							addChallenge(challenge.getString("ChallengeName"),
-									challenge.getString("Description"));
+							addChallenge(challenge.getString("ChallengeName"));
 							Log.d("groep", challenge.getString("ChallengeName")
 									+ " is toegevoegd");
 						}
@@ -102,14 +98,13 @@ public class Accepted extends Fragment {
 		});
 	}
 
-	private void addChallenge(String name, String description) {
+	private void addChallenge(String name) {
 
 		LinearLayout ll = new LinearLayout(context);
 		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
 				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 
 		TextView t1 = new TextView(context);
-		TextView t2 = new TextView(context);
 
 		ll.setBackgroundResource(R.color.listbackground);
 		ll.setMinimumHeight(MainActivity.GROUPLAYOUTHEIGHT);
@@ -121,9 +116,7 @@ public class Accepted extends Fragment {
 		ll.setOrientation(LinearLayout.VERTICAL);
 
 		t1.setText(name);
-		t2.setText(description);
 		ll.addView(t1);
-		ll.addView(t2);
 		ll.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
