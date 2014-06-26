@@ -9,6 +9,9 @@ import android.widget.TextView;
 import com.phonezilla.dareu.R;
 import com.phonezilla.dareu.schermen.grouppackage.GroupPage;
 
+/*
+ * Here you can control what to do next when the user selects an item
+ */
 public class OnItemClickListenerListViewItem implements OnItemClickListener {
 
 	@Override

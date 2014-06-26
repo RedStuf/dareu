@@ -1,0 +1,57 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.phonezilla.dareu.ChallengeDescription$PlaceholderFragment" >
+
+    <TextView
+        android:id="@+id/challengeTitleView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="" />
+
+    <ImageButton
+        android:id="@+id/upload_button"
+        android:layout_width="82dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/previewEvedince_button"
+        android:layout_alignLeft="@+id/previewEvedince_button"
+        android:layout_alignRight="@+id/previewEvedince_button"
+        android:layout_marginBottom="42dp"
+        android:src="@drawable/ic_action_photo" />
+
+    <TextView
+        android:id="@+id/challengeDescriptionView"
+        android:layout_width="201dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/scoreView"
+        android:layout_alignRight="@+id/upload_button"
+        android:text="" />
+
+    <TextView
+        android:id="@+id/scoreView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/challengeTitleView"
+        android:layout_marginRight="18dp"
+        android:layout_marginTop="52dp"
+        android:text="5pts"
+        android:textSize="@dimen/font_scoreView" />
+
+    <Button
+        android:id="@+id/previewEvedince_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="104dp"
+        android:text="@string/button_viewProof" />
+    
+</RelativeLayout>
+
+

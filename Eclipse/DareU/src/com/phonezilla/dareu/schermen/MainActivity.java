@@ -84,10 +84,15 @@ public class MainActivity extends FragmentActivity {
 			@Override
 			public void onClick(DialogInterface dialog, int whichButton) {
 				String value = input.getText().toString();
-				
+				/*
+				 * hier moet de groep aangemaakt worden in de database
+				 * vervolgens kan hij opgehaald worden door middel van een
+				 * refresh
+				 */
 				final ParseObject group = new ParseObject("Groups");
 				group.put("GroupName", value);
 
+				// Save the post and return
 				group.saveInBackground(new SaveCallback() {
 
 					@Override
@@ -100,6 +105,7 @@ public class MainActivity extends FragmentActivity {
 							usergroup.put("UserID", Beginscherm.userid);
 							usergroup.put("Admin", true);
 
+							// Save the post and return
 							usergroup.saveInBackground(new SaveCallback() {
 
 								@Override
@@ -131,6 +137,7 @@ public class MainActivity extends FragmentActivity {
 				new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int whichButton) {
+						// Canceled.
 					}
 				});
 
@@ -147,22 +154,33 @@ public class MainActivity extends FragmentActivity {
 		ParseQuery<ParseObject> query = ParseQuery.getQuery("User_Groups");
 		query.whereEqualTo("UserID", Beginscherm.userid);
 
+		// Run the query
 		query.findInBackground(new FindCallback<ParseObject>() {
 
 			@Override
 			public void done(List<ParseObject> groupList, ParseException e) {
 				if (e == null) {
+					// If there are results, update the list of posts
+					// and notify the adapter
+					// groups.clear();
+
 					for (ParseObject group : groupList) {
 						ParseQuery<ParseObject> query = ParseQuery
 								.getQuery("Groups");
 						query.whereEqualTo("objectId", group.get("GroupID")
 								.toString());
+						// Run the query
 						query.findInBackground(new FindCallback<ParseObject>() {
 
 							@Override
 							public void done(List<ParseObject> groupList,
 									ParseException e) {
 								if (e == null) {
+									// If there are results, update the list of
+									// posts
+									// and notify the adapter
+									// groups.clear();
+
 									for (ParseObject group : groupList) {
 										groupsOfUser.add(group
 												.getString("GroupName"));
@@ -173,6 +191,8 @@ public class MainActivity extends FragmentActivity {
 														+ " is toegevoegd en id = "
 														+ group.getObjectId());
 									}
+
+									// ((ArrayAdapter<String>)ListView.getAdapter()).notifyDataSetChanged();
 								} else {
 									Log.d("Post retrieval",
 											"Error: " + e.getMessage());
@@ -180,14 +200,18 @@ public class MainActivity extends FragmentActivity {
 								Log.d("groep",
 										Arrays.toString(groupList.toArray())
 												+ " is toegevoegd");
+								// adapter.notifyDataSetChanged();;
 							}
 						});
 					}
+
+					// ((ArrayAdapter<String>)ListView.getAdapter()).notifyDataSetChanged();
 				} else {
 					Log.d("Post retrieval", "Error: " + e.getMessage());
 				}
 				Log.d("groep", Arrays.toString(groupList.toArray())
 						+ " is toegevoegd");
+				// adapter.notifyDataSetChanged();;
 			}
 		});
 
