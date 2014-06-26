@@ -8,6 +8,9 @@
 package com.phonezilla.dareu;
 
 public final class R {
+    public static final class array {
+        public static final int camera_choices=0x7f070000;
+    }
     public static final class attr {
     }
     public static final class color {
@@ -45,35 +48,37 @@ public final class R {
         public static final int table_round_shape=0x7f02000b;
     }
     public static final class id {
-        public static final int acceptedchallenges=0x7f090016;
-        public static final int action_settings=0x7f090019;
-        public static final int adduser=0x7f09001a;
-        public static final int button1=0x7f090006;
-        public static final int camera_surface_view=0x7f09000f;
-        public static final int challengeDescriptionView=0x7f090012;
-        public static final int challengeNameView=0x7f09000a;
-        public static final int challengeTitleView=0x7f090011;
-        public static final int challenges=0x7f09000e;
-        public static final int checkBox=0x7f090017;
-        public static final int comp=0x7f090014;
-        public static final int container=0x7f090007;
-        public static final int grouplayout=0x7f090008;
-        public static final int imageView=0x7f090000;
-        public static final int newgroup=0x7f09001c;
-        public static final int pager=0x7f090009;
-        public static final int passwordfield=0x7f090005;
-        public static final int photo_button=0x7f090010;
-        public static final int previewEvedince_button=0x7f09000c;
-        public static final int rank=0x7f090015;
-        public static final int scoreView=0x7f09000d;
-        public static final int tdo=0x7f090013;
-        public static final int textView1=0x7f090001;
-        public static final int textView2=0x7f090002;
-        public static final int textView3=0x7f090004;
-        public static final int textViewItem=0x7f090018;
-        public static final int upload_button=0x7f09000b;
-        public static final int usernamefield=0x7f090003;
-        public static final int users=0x7f09001b;
+        public static final int acceptedchallenges=0x7f0a0017;
+        public static final int action_camera=0x7f0a001b;
+        public static final int action_settings=0x7f0a001a;
+        public static final int adduser=0x7f0a001c;
+        public static final int button1=0x7f0a0008;
+        public static final int camera_surface_view=0x7f0a0010;
+        public static final int challengeDescriptionView=0x7f0a0013;
+        public static final int challengeNameView=0x7f0a000b;
+        public static final int challengeTitleView=0x7f0a0012;
+        public static final int challenges=0x7f0a000f;
+        public static final int checkBox=0x7f0a0018;
+        public static final int comp=0x7f0a0015;
+        public static final int container=0x7f0a0007;
+        public static final int grouplayout=0x7f0a0009;
+        public static final int imageView=0x7f0a0000;
+        public static final int loginbutton=0x7f0a0006;
+        public static final int newgroup=0x7f0a001e;
+        public static final int pager=0x7f0a000a;
+        public static final int passwordfield=0x7f0a0005;
+        public static final int photo_button=0x7f0a0011;
+        public static final int previewEvedince_button=0x7f0a000d;
+        public static final int rank=0x7f0a0016;
+        public static final int scoreView=0x7f0a000e;
+        public static final int tdo=0x7f0a0014;
+        public static final int textView1=0x7f0a0001;
+        public static final int textView2=0x7f0a0002;
+        public static final int textView3=0x7f0a0004;
+        public static final int textViewItem=0x7f0a0019;
+        public static final int upload_button=0x7f0a000c;
+        public static final int usernamefield=0x7f0a0003;
+        public static final int users=0x7f0a001d;
     }
     public static final class layout {
         public static final int activity_begin=0x7f030000;
@@ -93,10 +98,10 @@ public final class R {
         public static final int list_view_row_item=0x7f03000e;
     }
     public static final class menu {
-        public static final int challenge_description=0x7f080000;
-        public static final int challenge_detail=0x7f080001;
-        public static final int challengemenu=0x7f080002;
-        public static final int mainmenu=0x7f080003;
+        public static final int challenge_description=0x7f090000;
+        public static final int challenge_detail=0x7f090001;
+        public static final int challengemenu=0x7f090002;
+        public static final int mainmenu=0x7f090003;
     }
     public static final class string {
         public static final int action_settings=0x7f060002;
@@ -111,7 +116,10 @@ public final class R {
         public static final int login=0x7f060005;
         public static final int login_intro=0x7f060007;
         public static final int logout=0x7f060006;
+        public static final int menu_camera_label=0x7f06000f;
         public static final int relationship=0x7f06000b;
+        public static final int title_activity_challenge_description=0x7f06000d;
+        public static final int title_activity_challenge_detail=0x7f06000e;
     }
     public static final class style {
         /** 
@@ -126,9 +134,9 @@ public final class R {
     
  API 14 theme customizations can go here. 
          */
-        public static final int AppBaseTheme=0x7f070001;
+        public static final int AppBaseTheme=0x7f080001;
         /**  Base application theme. 
          */
-        public static final int AppTheme=0x7f070000;
+        public static final int AppTheme=0x7f080000;
     }
 }

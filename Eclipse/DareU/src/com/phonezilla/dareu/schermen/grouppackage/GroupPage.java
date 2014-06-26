@@ -1,7 +1,6 @@
 package com.phonezilla.dareu.schermen.grouppackage;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import android.app.ActionBar;
@@ -20,12 +19,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.FindCallback;
@@ -245,10 +243,10 @@ public class GroupPage extends FragmentActivity implements TabListener {
 		AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
 		alert.setTitle("Maak een Challenge");
-		alert.setMessage("Voer een naam,description in");
-
-		// Set an EditText view to get user input
-
+		TextView v1 = new TextView(this);
+		v1.setText("Enter the name of your challenge");
+		TextView v2 = new TextView(this);
+		v1.setText("Enter the Description of your challenge");
 		final EditText input1 = new EditText(this);
 		input1.setFilters(new InputFilter[] { new InputFilter.LengthFilter(
 				MainActivity.MAXLETTERS) });
@@ -257,9 +255,13 @@ public class GroupPage extends FragmentActivity implements TabListener {
 				DESCRIPTIONLENGTH) });
 		LinearLayout ll = new LinearLayout(this);
 		ll.setOrientation(LinearLayout.VERTICAL);
+		ll.addView(v1);
 		ll.addView(input1);
+		ll.addView(v2);
 		ll.addView(input2);
+		
 		alert.setView(ll);
+		
 
 		alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 			@Override

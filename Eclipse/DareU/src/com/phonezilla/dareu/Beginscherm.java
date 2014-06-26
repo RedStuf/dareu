@@ -43,7 +43,7 @@ public class Beginscherm extends Activity {
 		Parse.initialize(this, "jO1gEQOmHYCbpI9S05t2v4jfgAhnWglBTx4Tma8m",
 				"nylyg1NjpI5NcW4bOz74xNebQbEEDF9OctbTj5qI");
 		getActionBar().hide();
-		loginbutton = (Button) findViewById(R.id.button1);
+		loginbutton = (Button) findViewById(R.id.loginbutton);
 		usernamefield = (EditText) findViewById(R.id.usernamefield);
 		passwordfield = (EditText) findViewById(R.id.passwordfield);
 		loginbutton.setOnClickListener(new View.OnClickListener() {

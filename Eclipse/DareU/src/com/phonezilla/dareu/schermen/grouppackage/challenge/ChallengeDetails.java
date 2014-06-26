@@ -16,10 +16,8 @@ public class ChallengeDetails extends Activity {
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-			if (savedInstanceState == null) {
-			getFragmentManager().beginTransaction()
-					.add(R.id.container, new PlaceholderFragment()).commit();
-		}
+		super.onCreate(savedInstanceState);	
+		
 	}
 
 	
@@ -41,7 +39,7 @@ public class ChallengeDetails extends Activity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
+		// automatically handle clicks  on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == R.id.action_settings) {
