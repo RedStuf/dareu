@@ -10,8 +10,6 @@
 
  public class Startcamera {
 
-
-
  public void startCamera() {
  Fragment cameraFragment = new CameraFragment();
  FragmentTransaction transaction = getActivity().getFragmentManager()
