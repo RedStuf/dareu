@@ -101,7 +101,8 @@ public class Pending extends Fragment {
 		
 		ImageButton accept = new ImageButton(context);
 		ImageButton decline = new ImageButton(context);
-
+		
+	
 		ll.setBackgroundResource(R.color.listbackground);
 		ll.setMinimumHeight(MainActivity.GROUPLAYOUTHEIGHT);
 		ll.setWeightSum(1);

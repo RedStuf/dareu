@@ -31,16 +31,18 @@ public final class R {
         public static final int font_scoreView=0x7f050002;
     }
     public static final class drawable {
-        public static final int button_login=0x7f020000;
-        public static final int download=0x7f020001;
-        public static final int ic_action_photo=0x7f020002;
-        public static final int ic_launcher=0x7f020003;
-        public static final int login_button_focused=0x7f020004;
-        public static final int login_button_normal=0x7f020005;
-        public static final int login_button_pressed=0x7f020006;
-        public static final int shape=0x7f020007;
-        public static final int stamp2=0x7f020008;
-        public static final int table_round_shape=0x7f020009;
+        public static final int accept=0x7f020000;
+        public static final int button_login=0x7f020001;
+        public static final int decline=0x7f020002;
+        public static final int download=0x7f020003;
+        public static final int ic_action_photo=0x7f020004;
+        public static final int ic_launcher=0x7f020005;
+        public static final int login_button_focused=0x7f020006;
+        public static final int login_button_normal=0x7f020007;
+        public static final int login_button_pressed=0x7f020008;
+        public static final int shape=0x7f020009;
+        public static final int stamp2=0x7f02000a;
+        public static final int table_round_shape=0x7f02000b;
     }
     public static final class id {
         public static final int acceptedchallenges=0x7f090013;
