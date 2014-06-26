@@ -9,22 +9,16 @@ import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-<<<<<<< HEAD
 import android.util.Log;
-=======
 import android.provider.MediaStore;
->>>>>>> origin/master
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-<<<<<<< HEAD
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-=======
 import android.widget.TextView;
->>>>>>> origin/master
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
