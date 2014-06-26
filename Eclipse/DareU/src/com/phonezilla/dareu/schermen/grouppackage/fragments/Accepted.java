@@ -7,6 +7,7 @@ import java.util.Timer;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.InputFilter;
@@ -29,6 +30,7 @@ import com.parse.SaveCallback;
 import com.phonezilla.dareu.R;
 import com.phonezilla.dareu.schermen.MainActivity;
 import com.phonezilla.dareu.schermen.grouppackage.GroupPage;
+import com.phonezilla.dareu.schermen.grouppackage.challenge.ChallengeDetails;
 
 public class Accepted extends Fragment {
 
@@ -84,7 +86,7 @@ public class Accepted extends Fragment {
 						for (ParseObject challenge : challengeList) {
 							Log.d("challenge groep id", ((GroupPage)getActivity()).groupid + " "
 									+ challenge.getString("GroupId") + " x");
-							addChallenge(challenge.getString("ChallengeName"));
+							addChallenge(challenge.getString("ChallengeName"),challenge.getObjectId());
 							Log.d("groep", challenge.getString("ChallengeName")
 									+ " is toegevoegd");
 						}
@@ -98,7 +100,7 @@ public class Accepted extends Fragment {
 		});
 	}
 
-	private void addChallenge(String name) {
+	private void addChallenge(String name,final String id) {
 
 		LinearLayout ll = new LinearLayout(context);
 		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
@@ -120,6 +122,9 @@ public class Accepted extends Fragment {
 		ll.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
+				Intent intent = new Intent(context,ChallengeDetails.class);
+				intent.putExtra("challengeid", id);
+				context.startActivity(intent);
 			}
 		});
 
