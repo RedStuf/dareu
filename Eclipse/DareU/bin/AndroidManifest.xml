@@ -1,24 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.phonezilla.dareu" >
-	
-     <uses-sdk android:minSdkVersion="14"
-         	android:targetSdkVersion="19" />
-     <uses-permission android:name="android.permission.INTERNET" />
-<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-<uses-permission android:name="android.permission.CAMERA"/>
-<uses-feature android:name="android.hardware.camera"/>
+
+    <uses-sdk
+        android:minSdkVersion="14"
+        android:targetSdkVersion="19" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+	<uses-permission android:name="android.permission.ACCESS_EXTERNAL_STORAGE"/> 
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-feature android:name="android.hardware.camera" android:required="true" />
+
     <application
+        android:name="com.phonezilla.dareu.dareuapp"
         android:allowBackup="true"
         android:icon="@drawable/stamp2"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme"
-        android:name="dareuapp"
-        
-        >
-        
+        android:theme="@style/AppTheme" >
         <activity
-            android:name=".Beginscherm"
+            android:name="com.phonezilla.dareu.Beginscherm"
             android:label="@string/app_name"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" >
@@ -28,16 +30,23 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
         <activity
-        android:name=".schermen.MainActivity"
-        android:label="@string/app_name"
-            android:screenOrientation="portrait" >
-    </activity>
-        <activity
-            android:name=".schermen.grouppackage.GroupPage"
+            android:name="com.phonezilla.dareu.schermen.MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.phonezilla.dareu.schermen.grouppackage.GroupPage"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.phonezilla.dareu.ChallengeDescription"
+            android:label="@string/title_activity_challenge_description" >
+        </activity>
+        <activity
+            android:name="com.phonezilla.dareu.ChallengeDetail"
+            android:label="@string/title_activity_challenge_detail" >
         </activity>
     </application>
 
