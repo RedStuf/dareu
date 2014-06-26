@@ -74,28 +74,34 @@ public class Accepted extends Fragment {
 	public void getChallenges() {
 		layout.removeAllViews();
 		ParseQuery<ParseObject> query = ParseQuery.getQuery("Challenges");
-		query.whereEqualTo("GroupId", ((GroupPage)getActivity()).groupid);
-		Log.d("currentusers", GroupPage.currentUsers.size()+"");
-		query.whereGreaterThan("Acceptees", GroupPage.currentUsers.size()/2);
+		query.whereEqualTo("GroupId", ((GroupPage) getActivity()).groupid);
 		query.findInBackground(new FindCallback<ParseObject>() {
 
 			@Override
 			public void done(List<ParseObject> challengeList, ParseException e) {
 				if (e == null) {
-					if (challengeList.size() > 0) {
-						for (ParseObject challenge : challengeList) {
-							Log.d("challenge groep id", ((GroupPage)getActivity()).groupid + " "
-									+ challenge.getString("GroupId") + " x");
-							addChallenge(challenge.getString("ChallengeName"),challenge.getObjectId());
-							Log.d("groep", challenge.getString("ChallengeName")
-									+ " is toegevoegd");
-						}
+						for (final ParseObject challenge : challengeList) {
+
+							ParseQuery<ParseObject> query = ParseQuery.getQuery("Challenge_User");
+							query.whereEqualTo("ChallengeID",
+									challenge.getObjectId());
+							query.whereEqualTo("Accepted", true);
+							query.findInBackground(new FindCallback<ParseObject>() {
+
+								@Override
+								public void done(List<ParseObject> userList,
+										ParseException e) {
+									if (e == null && GroupPage.currentUsers.size() <= (userList.size() / 2)) {
+										addChallenge(challenge.getString("ChallengeName"),challenge.getObjectId());
+
+									}
+								}
+							});
+						
 					}
 				} else {
 					Log.d("Post retrieval", "Error: " + e.getMessage());
 				}
-				Log.d("groep", Arrays.toString(challengeList.toArray())
-						+ " is toegevoegd");
 			}
 		});
 	}

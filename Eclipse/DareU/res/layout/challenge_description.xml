@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-
+	<LinearLayout 
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_weight="1" >
     <TextView
         android:id="@+id/challengeNameView"
         android:layout_width="match_parent"
@@ -47,5 +51,33 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="104dp"
         android:text="@string/button_viewProof" />
+</LinearLayout>
+    <LinearLayout 
+        android:id="@+id/acceptlayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:layout_weight="5" >
     
-</RelativeLayout>
+    
+<ImageButton
+    android:src="@drawable/accept"
+    android:id="@+id/accept"
+    android:layout_weight="1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    />
+<ImageButton
+    android:src="@drawable/decline"
+    android:id="@+id/decline"
+    android:layout_weight="1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    />
+    
+    
+</LinearLayout>
+
+    
+</LinearLayout>
+    
