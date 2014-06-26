@@ -3,6 +3,11 @@
     tools:context="com.phonezilla.dareu.ChallengeDetail" >
 
     <item
+        android:id="@+id/action_camera"
+        android:icon="@drawable/ic_action_camera"
+        android:showAsAction="always"
+        android:title="@string/menu_camera_label"/>
+    <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:showAsAction="never"
