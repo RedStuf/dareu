@@ -57,17 +57,12 @@ public class Beginscherm extends Activity {
 					ParseQuery<ParseUser> query = ParseUser.getQuery();
 
 					query.whereEqualTo("username", userName);
-					// Run the query
 					query.findInBackground(new FindCallback<ParseUser>() {
 
 						@Override
 						public void done(List<ParseUser> userList,
 								ParseException e) {
 							if (e == null) {
-								// If there are results, update the list of
-								// posts
-								// and notify the adapter
-								// groups.clear();
 								Log.d("userListCount", "" + userList.size());
 								if (userList.size() > 0) {
 									ParseUser.logInInBackground(userName,
@@ -94,9 +89,6 @@ public class Beginscherm extends Activity {
 													}
 												}
 											});
-									// GroupPage.ObjectItemData.add(new
-									// User(user.getObjectId().toString(),user.get("username").toString()));
-
 								} else {
 									alertDialog = new AlertDialog.Builder(
 											Beginscherm.this);
@@ -129,12 +121,10 @@ public class Beginscherm extends Activity {
 
 									alertDialog.show();
 								}
-								// ((ArrayAdapter<String>)ListView.getAdapter()).notifyDataSetChanged();
 							} else {
 								Log.d("Post retrieval",
 										"Error: " + e.getMessage());
 							}
-							// adapter.notifyDataSetChanged();;
 						}
 					});
 				}
@@ -148,7 +138,6 @@ public class Beginscherm extends Activity {
 		username = userName;
 		ParseQuery<ParseUser> query = ParseUser.getQuery();
 
-		// Run the query
 		query.findInBackground(new FindCallback<ParseUser>() {
 
 			@Override
@@ -180,7 +169,6 @@ public class Beginscherm extends Activity {
 			userid = user.getObjectId();
 			nextActivity();
 		} catch (ParseException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 

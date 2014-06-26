@@ -15,6 +15,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.InputFilter;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,6 +23,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -37,6 +40,7 @@ import com.phonezilla.dareu.handlers.ArrayAdapterItem;
 import com.phonezilla.dareu.handlers.OnItemClickListenerListViewItem;
 import com.phonezilla.dareu.objects.Collection;
 import com.phonezilla.dareu.objects.User;
+import com.phonezilla.dareu.schermen.MainActivity;
 import com.phonezilla.dareu.schermen.grouppackage.fragments.Accepted;
 import com.phonezilla.dareu.schermen.grouppackage.fragments.Completed;
 import com.phonezilla.dareu.schermen.grouppackage.fragments.Pending;
@@ -49,6 +53,7 @@ public class GroupPage extends FragmentActivity implements TabListener {
 	public static ArrayList<Collection> currentUsers = new ArrayList<Collection>();
 	public AlertDialog alertDialog;
 	private String groupid;
+	private final int DESCRIPTIONLENGTH = 250;
 
 	public GroupPage() {
 
@@ -58,6 +63,7 @@ public class GroupPage extends FragmentActivity implements TabListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		groupid = getIntent().getExtras().getString("groupid").toString();
 		getCurrentUsers();
 		pager = (ViewPager) findViewById(R.id.pager);
 		pager.setAdapter(new Adapter(getSupportFragmentManager()));
@@ -200,7 +206,7 @@ public class GroupPage extends FragmentActivity implements TabListener {
 				.setOnItemClickListener(new OnItemClickListenerListViewItem());
 		AlertDialog.Builder dialog = new AlertDialog.Builder(GroupPage.this);
 		dialog.setView(listViewItems).setTitle("Users").show();
-		final AlertDialog alertDialog = dialog.create();
+		dialog.create();
 
 	}
 
@@ -208,7 +214,6 @@ public class GroupPage extends FragmentActivity implements TabListener {
 		try {
 			Thread.sleep(2000);
 
-			groupid = getIntent().getExtras().getString("groupid").toString();
 			ParseQuery<ParseObject> query = ParseQuery.getQuery("User_Groups");
 			query.whereEqualTo("GroupID", groupid);
 			query.whereEqualTo("UserID", userid);
@@ -236,7 +241,67 @@ public class GroupPage extends FragmentActivity implements TabListener {
 			e.printStackTrace();
 		}
 	}
+	public void makeChallenge() {
+		AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
+		alert.setTitle("Maak een Challenge");
+		alert.setMessage("Voer een naam,description in");
+
+		// Set an EditText view to get user input
+
+		final EditText input1 = new EditText(this);
+		input1.setFilters(new InputFilter[] { new InputFilter.LengthFilter(
+				MainActivity.MAXLETTERS) });
+		final EditText input2 = new EditText(this);
+		input2.setFilters(new InputFilter[] { new InputFilter.LengthFilter(
+				DESCRIPTIONLENGTH) });
+		LinearLayout ll = new LinearLayout(this);
+		ll.setOrientation(LinearLayout.VERTICAL);
+		ll.addView(input1);
+		ll.addView(input2);
+		alert.setView(ll);
+
+		alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int whichButton) {
+
+				String value1 = input1.getText().toString();
+				String value2 = input2.getText().toString();
+				
+				ParseObject challenges = new ParseObject("Challenges");
+				challenges.put("ChallengeName", value1);
+				challenges.put("Description", value2);
+				challenges.put("GroupId", groupid);
+				challenges.put("State", 0);
+				challenges.put("Acceptees", 0);
+
+				challenges.saveInBackground(new SaveCallback() {
+
+					@Override
+					public void done(ParseException e) {
+						if (e == null) {
+							setResult(RESULT_OK);
+						} else {
+							Toast.makeText(getApplicationContext(),
+									"Error saving: " + e.getMessage(),
+									Toast.LENGTH_SHORT).show();
+						}
+					}
+
+				});
+
+			}
+		});
+
+		alert.setNegativeButton("Cancel",
+				new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int whichButton) {
+					}
+				});
+
+		alert.show();
+	}
 	public void addUser(String userid) {
 		ParseObject usergroup = new ParseObject("User_Groups");
 		usergroup.put("UserID", userid);

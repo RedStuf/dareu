@@ -30,7 +30,7 @@
         android:layout_height="match_parent"
         tools:context="com.phonezilla.dareu.schermen.fragments.Challenges"
         android:orientation="vertical"
-        android:id="@+id/acceptedchallenges"
+        android:id="@+id/challenges"
         />
 
 	</ScrollView>
