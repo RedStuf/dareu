@@ -75,21 +75,19 @@ public final class R {
     public static final class layout {
         public static final int activity_begin=0x7f030000;
         public static final int activity_challenge_description=0x7f030001;
-        public static final int activity_challenge_detail=0x7f030002;
-        public static final int activity_group=0x7f030003;
-        public static final int activity_main=0x7f030004;
-        public static final int challenge_description=0x7f030005;
-        public static final int fragment_accepted=0x7f030006;
-        public static final int fragment_camera=0x7f030007;
-        public static final int fragment_challenge_description=0x7f030008;
-        public static final int fragment_challenge_detail=0x7f030009;
-        public static final int fragment_challenges=0x7f03000a;
-        public static final int fragment_completed=0x7f03000b;
-        public static final int fragment_friends=0x7f03000c;
-        public static final int fragment_groups=0x7f03000d;
-        public static final int fragment_pending=0x7f03000e;
-        public static final int fragment_settings=0x7f03000f;
-        public static final int list_view_row_item=0x7f030010;
+        public static final int activity_group=0x7f030002;
+        public static final int activity_main=0x7f030003;
+        public static final int challenge_description=0x7f030004;
+        public static final int fragment_accepted=0x7f030005;
+        public static final int fragment_camera=0x7f030006;
+        public static final int fragment_challenge_description=0x7f030007;
+        public static final int fragment_challenges=0x7f030008;
+        public static final int fragment_completed=0x7f030009;
+        public static final int fragment_friends=0x7f03000a;
+        public static final int fragment_groups=0x7f03000b;
+        public static final int fragment_pending=0x7f03000c;
+        public static final int fragment_settings=0x7f03000d;
+        public static final int list_view_row_item=0x7f03000e;
     }
     public static final class menu {
         public static final int challenge_description=0x7f080000;
