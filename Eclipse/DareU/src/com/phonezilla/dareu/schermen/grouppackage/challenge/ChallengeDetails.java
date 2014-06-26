@@ -50,10 +50,8 @@ public class ChallengeDetails extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);	
-<<<<<<< HEAD
 		setContentView(R.layout.challenge_description);
 		addButtons();
-=======
 		
 		/*
 		challengeTitle = (TextView) findViewById(R.id.challengeTitleView);
@@ -94,8 +92,6 @@ public class ChallengeDetails extends Activity {
 		
 		
 		
-		
->>>>>>> origin/master
 	}
 
 	
