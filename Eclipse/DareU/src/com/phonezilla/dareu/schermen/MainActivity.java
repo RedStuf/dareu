@@ -15,6 +15,9 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.text.InputFilter;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
@@ -27,6 +30,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.FindCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -59,13 +63,6 @@ public class MainActivity extends FragmentActivity {
 			}
 		});
 		getGroups();
-		/*
-		timer = new Timer();
-		timer.schedule(new TimerTask() {
-		    public void run() {
-		    	getGroups(); 
-		     }
-		  }, 5000);*/
 	}
 
 	public void makeGroup() {
@@ -236,7 +233,26 @@ public class MainActivity extends FragmentActivity {
 		if (layout != null)
 			layout.addView(ll);
 	}
+	@Override
+	public boolean onCreateOptionsMenu(final Menu menu) {
 
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.mainmenu, menu);
+		
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		
+		case R.id.refresh:
+			getGroups();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+	}
 }
 
 class KlikLuisteraar implements OnClickListener {

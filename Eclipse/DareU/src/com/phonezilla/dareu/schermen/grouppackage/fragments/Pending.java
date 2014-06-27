@@ -9,6 +9,9 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
@@ -48,14 +51,23 @@ public class Pending extends Fragment {
 		});
 
 		getChallenges();
-		// elke 5 sec check voor nieuwe groepen
-		/*
-		 * timer = new Timer(); timer.schedule(new TimerTask() { public void
-		 * run() { getChallenges(); } }, 5000);
-		 */
+		setHasOptionsMenu(true);
 		return view;
 	}
-
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+	    super.onCreateOptionsMenu(menu, inflater);
+	
+	}
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		
+		case R.id.refresh:
+			getChallenges();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+	}
 	public void makeChallenge() {
 
 		((GroupPage) getActivity()).makeChallenge();
@@ -85,7 +97,7 @@ public class Pending extends Fragment {
 								public void done(List<ParseObject> userList,
 										ParseException e) {
 									if (e == null && GroupPage.currentUsers.size() > (userList.size() / 2)) {
-										addChallenge(challenge.getString("ChallengeName"),challenge.getObjectId());
+										addChallenge(challenge.getString("ChallengeName"),challenge.getString("Description"),challenge.getObjectId());
 
 									}
 								}
@@ -99,13 +111,14 @@ public class Pending extends Fragment {
 		});
 	}
 
-	private void addChallenge(String name,final String id) {
+	private void addChallenge(final String name,final String description,final String id) {
 
 		LinearLayout ll = new LinearLayout(context);
 		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
 				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 
 		TextView t1 = new TextView(context);
+		t1.setTextSize(24);
 
 		ll.setBackgroundResource(R.color.listbackground);
 		ll.setMinimumHeight(MainActivity.GROUPLAYOUTHEIGHT);
@@ -123,6 +136,8 @@ public class Pending extends Fragment {
 			public void onClick(View view) {
 				Intent intent = new Intent(context,ChallengeDetails.class);
 				intent.putExtra("challengeid", id);
+				intent.putExtra("name", name);
+				intent.putExtra("description", description);
 				context.startActivity(intent);
 			}
 		});

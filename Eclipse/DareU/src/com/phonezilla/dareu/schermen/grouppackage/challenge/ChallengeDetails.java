@@ -1,8 +1,9 @@
 package com.phonezilla.dareu.schermen.grouppackage.challenge;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -19,7 +20,6 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -34,7 +34,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.FindCallback;
+import com.parse.ParseACL;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.SaveCallback;
@@ -52,17 +54,14 @@ public class ChallengeDetails extends Activity {
 	protected TextView challengeDescription;
 	protected TextView challengeScore;
 
-	public static final int TAKE_PHOTO_REQUEST = 0;
-	public static final int TAKE_VIDEO_REQUEST = 1;
-	public static final int PICK_PHOTO_REQUEST = 2;
-	public static final int PICK_VIDEO_REQUEST = 3;
-
 	public static final int MEDIA_TYPE_IMAGE = 4;
 	public static final int MEDIA_TYPE_VIDEO = 5;
 	public static final int FILE_SIZE_LIMIT = 1024 * 1024 * 10;
 
 	public static final String TAG = ChallengeDetails.class.getSimpleName();
-	
+	protected static final int PICK_PHOTO_REQUEST = 0;
+
+	ByteArrayOutputStream stream1 = new ByteArrayOutputStream();
 	Bitmap bp;
 
 	protected Uri mMediaUri;
@@ -77,84 +76,81 @@ public class ChallengeDetails extends Activity {
 		 * (TextView)findViewById(R.id.challengeDescriptionView); challengeScore
 		 * = (TextView) findViewById(R.id.scoreView);
 		 */
+		ParseACL defaultACL = new ParseACL();
+
+		/*
+		 * If you would like all objects to be private by default, remove this
+		 * line
+		 */
+		defaultACL.setPublicReadAccess(true);
+
+		ParseACL.setDefaultACL(defaultACL, true);
 		setContentView(R.layout.challenge_description);
 		addButtons();
+		TextView challengename = (TextView) findViewById(R.id.challengeNameView);
+		TextView challengedescription = (TextView) findViewById(R.id.challengeDescriptionView);
+		Button viewproof = (Button) findViewById(R.id.previewEvedince_button);
+		viewproof.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				ParseQuery<ParseObject> query = ParseQuery
+						.getQuery("Challenges");
+				query.whereEqualTo("objectId", getIntent().getExtras()
+						.get("id").toString());
+				query.findInBackground(new FindCallback<ParseObject>() {
+
+					@Override
+					public void done(List<ParseObject> challengeList,
+							ParseException e) {
+
+						InputStream stream = null;
+						if (e == null) {
+							for (ParseObject challenge : challengeList) {
+								AlertDialog.Builder alert = new AlertDialog.Builder(
+										ChallengeDetails.this);
+
+								alert.setTitle("Proof");
+								ImageView view = new ImageView(
+										ChallengeDetails.this);
+								try {
+									stream = new ByteArrayInputStream(
+											((ParseFile) challenge
+													.get("Proof"))
+													.getData());
+								} catch (ParseException e1) {
+									// TODO Auto-generated catch block
+									e1.printStackTrace();
+								}
+								view.setImageBitmap(BitmapFactory
+										.decodeStream(stream));
+								
+								//view.setImageBitmap(bp);
+								alert.setView(view);
+
+								alert.show();
+							}
+						} else {
+							Log.d("Post retrieval",
+									"Error: " + e.getMessage());
+						}
+					}
+				});
+
+			}
+		});
+		challengename.setText(getIntent().getExtras().get("name").toString());
+		// challengedescription.setText(getIntent().getExtras().get("description").toString());
 		mDialogListener = new DialogInterface.OnClickListener() {
 
 			@Override
 			public void onClick(DialogInterface mDialogListener, int which) {
-				switch (which) {
-				case 0: // Take Picture
-					Intent takePhotoIntent = new Intent(
-							MediaStore.ACTION_IMAGE_CAPTURE);
-					mMediaUri = getOutputMediaFile(MEDIA_TYPE_IMAGE);
-					if (mMediaUri == null) {
-						// Display toast with error message
-						Toast.makeText(
-								ChallengeDetails.this,
-								"There was a problem accessing your device's external storage",
-								Toast.LENGTH_LONG).show();
-					}
-					takePhotoIntent
-							.putExtra(MediaStore.EXTRA_OUTPUT, mMediaUri);
-					startActivityForResult(takePhotoIntent, TAKE_PHOTO_REQUEST);
-					break;
 
-				case 1: // Take video
-					Intent videoIntent = new Intent(
-							MediaStore.ACTION_VIDEO_CAPTURE);
-					mMediaUri = getOutputMediaFile(MEDIA_TYPE_VIDEO);
-					if (mMediaUri == null) {
-						// Display toast with error message
-						Toast.makeText(
-								ChallengeDetails.this,
-								"There was a problem accessing your device's external storage",
-								Toast.LENGTH_LONG).show();
-					} else {
-						videoIntent
-								.putExtra(MediaStore.EXTRA_OUTPUT, mMediaUri);
-						videoIntent.putExtra(MediaStore.EXTRA_DURATION_LIMIT,
-								10);
-						videoIntent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 0);
-						startActivityForResult(videoIntent, TAKE_VIDEO_REQUEST);
-					}
+				Intent choosePhotoIntent = new Intent(Intent.ACTION_GET_CONTENT);
+				choosePhotoIntent.setType("image/*");
+				startActivityForResult(choosePhotoIntent, PICK_PHOTO_REQUEST);
 
-					break;
-
-				case 2: // choose picture
-					Intent choosePhotoIntent = new Intent(
-							Intent.ACTION_GET_CONTENT);
-					choosePhotoIntent.setType("image/*");
-					startActivityForResult(choosePhotoIntent,
-							PICK_PHOTO_REQUEST);
-					break;
-
-				case 3: // choose video
-					Intent chooseVideoIntent = new Intent(
-							Intent.ACTION_GET_CONTENT);
-					chooseVideoIntent.setType("video/*");
-					startActivityForResult(chooseVideoIntent,
-							PICK_VIDEO_REQUEST);
-					break;
-
-				}
-				Button viewproof = (Button)findViewById(R.id.previewEvedince_button);
-				viewproof.setOnClickListener(new View.OnClickListener() {
-					
-					@Override
-					public void onClick(View v) {
-						AlertDialog.Builder alert = new AlertDialog.Builder(ChallengeDetails.this);
-
-						alert.setTitle("Proof");
-						ImageView view = new ImageView(ChallengeDetails.this);
-						view.setImageBitmap(bp);
-						
-						alert.setView(view);
-
-						alert.show();
-						
-					}
-				});
+				
 			}
 
 			private Uri getOutputMediaFile(int mediaType) {
@@ -227,79 +223,60 @@ public class ChallengeDetails extends Activity {
 		// TODO Auto-generated method stub
 		super.onActivityResult(requestCode, resultCode, data);
 		InputStream stream = null;
-		
+
 		if (resultCode == RESULT_OK) {
-			if(requestCode == TAKE_PHOTO_REQUEST)
-			{
-				try {
-					stream = getContentResolver().openInputStream(data.getData());
-				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-		        bp = BitmapFactory.decodeStream(stream);
-			}
-			// add it to gallery
-			
-			if (requestCode == PICK_PHOTO_REQUEST) {
-				try {
-					stream = getContentResolver().openInputStream(data.getData());
-				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-		        bp = BitmapFactory.decodeStream(stream);
+			try {
+				stream = getContentResolver().openInputStream(data.getData());
+				bp = BitmapFactory.decodeStream(stream);
+
+				ByteArrayOutputStream stream1 = new ByteArrayOutputStream();
+				bp.compress(Bitmap.CompressFormat.PNG, 100, stream1);
+				byte[] image = stream1.toByteArray();
+				final ParseFile file = new ParseFile("androidbegin.png", image);
 				
-				if (data == null) {
-					Toast.makeText(ChallengeDetails.this,
-							"Sorry, there was an error !", Toast.LENGTH_LONG)
-							.show();
-				} else {
-					mMediaUri = data.getData();
-				}
+				file.saveInBackground(new SaveCallback() {
 
-				if (requestCode == PICK_PHOTO_REQUEST) {
-					int fileSize = 0;
-					Log.i(TAG, "Media: URI" + mMediaUri);
-					InputStream inputStream = null;
-
-					try {
-						inputStream = getContentResolver().openInputStream(
-								mMediaUri);
-						fileSize = inputStream.available();
-					} catch (FileNotFoundException e) {
-						Toast.makeText(ChallengeDetails.this,
-								R.string.error_opening_file, Toast.LENGTH_LONG)
-								.show();
-						return;
-					} catch (IOException e) {
-						Toast.makeText(ChallengeDetails.this,
-								R.string.error_opening_file, Toast.LENGTH_LONG)
-								.show();
-						return;
-					} finally {
-						try {
-							inputStream.close();
-						} catch (IOException e) {
-							// Intentionally blank//
-						}
-
-						if (fileSize >= FILE_SIZE_LIMIT) {
-							Toast.makeText(ChallengeDetails.this,
-									R.string.error_file_size_too_large,
-									Toast.LENGTH_LONG).show();
-							return;
+					@Override
+					public void done(ParseException e) {
+						if (e == null) {
+							setResult(RESULT_OK);
+							
+							
+							Toast.makeText(getApplicationContext(), "User added",
+									Toast.LENGTH_SHORT).show();
+						} else {
+							Toast.makeText(getApplicationContext(),
+									"Error saving: " + e.getMessage(),
+									Toast.LENGTH_SHORT).show();
 						}
 					}
+				});
+				Thread.sleep(10000);
+				ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(
+						"Challenges");
+				 
+				ParseObject usergroup;
+				try {
+					usergroup = query.get(getIntent().getExtras().get("id").toString());
+					usergroup.put("Proof", file);
+					ParseACL defaultACL = new ParseACL();
+					defaultACL.setPublicReadAccess(true);
+					usergroup.setACL(defaultACL);
+					usergroup.saveInBackground();
+				} catch (ParseException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
 				}
+				
+
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InterruptedException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
 			}
 
-			else {
-				Intent mediaScanIntent = new Intent(
-						Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-				mediaScanIntent.setData(mMediaUri);
-				sendBroadcast(mediaScanIntent);
-			}
 		} else if (resultCode != RESULT_CANCELED) {
 			Toast.makeText(this, "Sorry, there was an error !",
 					Toast.LENGTH_LONG).show();
@@ -378,7 +355,7 @@ public class ChallengeDetails extends Activity {
 		});
 		ImageButton accept = (ImageButton) findViewById(R.id.accept);
 		ImageButton decline = (ImageButton) findViewById(R.id.decline);
-		String challengeid = getIntent().getExtras().getString("challengeid");
+		String challengeid = getIntent().getExtras().getString("id");
 		accept.setOnClickListener(new myOnClickListener(true, challengeid, ll));
 		decline.setOnClickListener(new myOnClickListener(false, challengeid, ll));
 

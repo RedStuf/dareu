@@ -1,32 +1,28 @@
 package com.phonezilla.dareu.schermen.grouppackage.fragments;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Timer;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.InputFilter;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
-import com.parse.SaveCallback;
 import com.phonezilla.dareu.R;
 import com.phonezilla.dareu.schermen.MainActivity;
 import com.phonezilla.dareu.schermen.grouppackage.GroupPage;
@@ -53,24 +49,30 @@ public class Accepted extends Fragment {
 				makeChallenge();
 			}
 		});
-
+		setHasOptionsMenu(true);
 		getChallenges();
-		// elke 5 sec check voor nieuwe groepen
-		/*timer = new Timer();
-		timer.schedule(new TimerTask() {
-		    public void run() {
-		    	getChallenges(); 
-		     }
-		  }, 5000);*/
 		return view;
 	}
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+	    super.onCreateOptionsMenu(menu, inflater);
 	
+	}
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		
+		case R.id.refresh:
+			getChallenges();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+	}
 	public void makeChallenge() {
 		
 		((GroupPage)getActivity()).makeChallenge();
 		getChallenges();
 	}
-
+	
 	public void getChallenges() {
 		layout.removeAllViews();
 		ParseQuery<ParseObject> query = ParseQuery.getQuery("Challenges");
@@ -92,7 +94,7 @@ public class Accepted extends Fragment {
 								public void done(List<ParseObject> userList,
 										ParseException e) {
 									if (e == null && GroupPage.currentUsers.size() <= (userList.size() / 2)) {
-										addChallenge(challenge.getString("ChallengeName"),challenge.getObjectId());
+										addChallenge(challenge.getString("ChallengeName"),challenge.getString("Description"),challenge.getObjectId());
 
 									}
 								}
@@ -106,13 +108,14 @@ public class Accepted extends Fragment {
 		});
 	}
 
-	private void addChallenge(String name,final String id) {
+	private void addChallenge(final String name,final String description,final String id) {
 
 		LinearLayout ll = new LinearLayout(context);
 		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
 				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 
 		TextView t1 = new TextView(context);
+		t1.setTextSize(24);
 
 		ll.setBackgroundResource(R.color.listbackground);
 		ll.setMinimumHeight(MainActivity.GROUPLAYOUTHEIGHT);
@@ -121,7 +124,7 @@ public class Accepted extends Fragment {
 		params.setMargins(0, 0, 0, 5);
 		ll.setLayoutParams(params);
 
-		ll.setOrientation(LinearLayout.VERTICAL);
+		ll.setOrientation(LinearLayout.HORIZONTAL);
 
 		t1.setText(name);
 		ll.addView(t1);
@@ -129,7 +132,9 @@ public class Accepted extends Fragment {
 			@Override
 			public void onClick(View view) {
 				Intent intent = new Intent(context,ChallengeDetails.class);
-				intent.putExtra("challengeid", id);
+				intent.putExtra("id", id);
+				intent.putExtra("name", name);
+				intent.putExtra("description", description);
 				context.startActivity(intent);
 			}
 		});

@@ -132,6 +132,8 @@ public class GroupPage extends FragmentActivity implements TabListener {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
+		
+		
 		case R.id.adduser:
 			showAddUser();
 			return true;
