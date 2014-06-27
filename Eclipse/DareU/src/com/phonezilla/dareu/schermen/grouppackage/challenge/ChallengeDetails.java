@@ -14,6 +14,8 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -24,7 +26,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -55,14 +59,14 @@ public class ChallengeDetails extends Activity {
 
 	public static final int MEDIA_TYPE_IMAGE = 4;
 	public static final int MEDIA_TYPE_VIDEO = 5;
-	public static final int FILE_SIZE_LIMIT = 1024*1024*10;
-	
+	public static final int FILE_SIZE_LIMIT = 1024 * 1024 * 10;
+
 	public static final String TAG = ChallengeDetails.class.getSimpleName();
+	
+	Bitmap bp;
 
 	protected Uri mMediaUri;
 
-	
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -126,12 +130,31 @@ public class ChallengeDetails extends Activity {
 					break;
 
 				case 3: // choose video
-					Intent chooseVideoIntent = new Intent(Intent.ACTION_GET_CONTENT);
+					Intent chooseVideoIntent = new Intent(
+							Intent.ACTION_GET_CONTENT);
 					chooseVideoIntent.setType("video/*");
-					startActivityForResult(chooseVideoIntent, PICK_VIDEO_REQUEST);
+					startActivityForResult(chooseVideoIntent,
+							PICK_VIDEO_REQUEST);
 					break;
 
 				}
+				Button viewproof = (Button)findViewById(R.id.previewEvedince_button);
+				viewproof.setOnClickListener(new View.OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						AlertDialog.Builder alert = new AlertDialog.Builder(ChallengeDetails.this);
+
+						alert.setTitle("Proof");
+						ImageView view = new ImageView(ChallengeDetails.this);
+						view.setImageBitmap(bp);
+						
+						alert.setView(view);
+
+						alert.show();
+						
+					}
+				});
 			}
 
 			private Uri getOutputMediaFile(int mediaType) {
@@ -181,8 +204,6 @@ public class ChallengeDetails extends Activity {
 				}
 				return mMediaUri;
 			}
-			
-		
 
 			boolean isExternalStorageAvailable() {
 				String state = Environment.getExternalStorageState();
@@ -196,71 +217,94 @@ public class ChallengeDetails extends Activity {
 			}
 		};
 
-	
-		
 	}
-	
+
 	public void uploadStatus() {
 	}
-	
-	
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// TODO Auto-generated method stub
 		super.onActivityResult(requestCode, resultCode, data);
-
-			if(resultCode == RESULT_OK){
-				//add it to gallery
-				
-				if(requestCode == PICK_PHOTO_REQUEST || requestCode == PICK_VIDEO_REQUEST){
-					if (data == null ){
-						Toast.makeText(ChallengeDetails.this , "Sorry, there was an error !" , Toast.LENGTH_LONG).show();
-					}else{
-					mMediaUri = data.getData();
-					}
-					
-					if (requestCode == PICK_PHOTO_REQUEST){
-						int fileSize = 0;
-						Log.i(TAG, "Media: URI" + mMediaUri);
-						InputStream inputStream = null;
-						
-						try{
-						inputStream = getContentResolver().openInputStream(mMediaUri);
-						fileSize = inputStream.available();
-						}
-						catch(FileNotFoundException e){
-							Toast.makeText(ChallengeDetails.this , R.string.error_opening_file , Toast.LENGTH_LONG).show();
-							return;
-						}
-						catch(IOException e){
-							Toast.makeText(ChallengeDetails.this , R.string.error_opening_file, Toast.LENGTH_LONG).show();
-							return;
-						}
-						finally{
-							try{
-							inputStream.close();
-							}
-							catch (IOException e){
-								//Intentionally blank//
-							}
-							
-							if (fileSize >= FILE_SIZE_LIMIT){
-								Toast.makeText(ChallengeDetails.this, R.string.error_file_size_too_large, Toast.LENGTH_LONG).show();
-								return;
-							}
-						}
-					}
+		InputStream stream = null;
+		
+		if (resultCode == RESULT_OK) {
+			if(requestCode == TAKE_PHOTO_REQUEST)
+			{
+				try {
+					stream = getContentResolver().openInputStream(data.getData());
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
-				
-				else{
-					Intent mediaScanIntent = new Intent (Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-					mediaScanIntent.setData(mMediaUri);
-					sendBroadcast(mediaScanIntent);
-				}
-			}else if (resultCode != RESULT_CANCELED){
-				Toast.makeText(this, "Sorry, there was an error !", Toast.LENGTH_LONG).show();
+		        bp = BitmapFactory.decodeStream(stream);
 			}
+			// add it to gallery
+			
+			if (requestCode == PICK_PHOTO_REQUEST) {
+				try {
+					stream = getContentResolver().openInputStream(data.getData());
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		        bp = BitmapFactory.decodeStream(stream);
+				
+				if (data == null) {
+					Toast.makeText(ChallengeDetails.this,
+							"Sorry, there was an error !", Toast.LENGTH_LONG)
+							.show();
+				} else {
+					mMediaUri = data.getData();
+				}
+
+				if (requestCode == PICK_PHOTO_REQUEST) {
+					int fileSize = 0;
+					Log.i(TAG, "Media: URI" + mMediaUri);
+					InputStream inputStream = null;
+
+					try {
+						inputStream = getContentResolver().openInputStream(
+								mMediaUri);
+						fileSize = inputStream.available();
+					} catch (FileNotFoundException e) {
+						Toast.makeText(ChallengeDetails.this,
+								R.string.error_opening_file, Toast.LENGTH_LONG)
+								.show();
+						return;
+					} catch (IOException e) {
+						Toast.makeText(ChallengeDetails.this,
+								R.string.error_opening_file, Toast.LENGTH_LONG)
+								.show();
+						return;
+					} finally {
+						try {
+							inputStream.close();
+						} catch (IOException e) {
+							// Intentionally blank//
+						}
+
+						if (fileSize >= FILE_SIZE_LIMIT) {
+							Toast.makeText(ChallengeDetails.this,
+									R.string.error_file_size_too_large,
+									Toast.LENGTH_LONG).show();
+							return;
+						}
+					}
+				}
+			}
+
+			else {
+				Intent mediaScanIntent = new Intent(
+						Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+				mediaScanIntent.setData(mMediaUri);
+				sendBroadcast(mediaScanIntent);
+			}
+		} else if (resultCode != RESULT_CANCELED) {
+			Toast.makeText(this, "Sorry, there was an error !",
+					Toast.LENGTH_LONG).show();
 		}
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -312,10 +356,10 @@ public class ChallengeDetails extends Activity {
 		}
 
 	}
-	public void addButtons()
-	{
-		final LinearLayout ll = (LinearLayout)findViewById(R.id.acceptlayout);
-		
+
+	public void addButtons() {
+		final LinearLayout ll = (LinearLayout) findViewById(R.id.acceptlayout);
+
 		ParseQuery<ParseObject> query = ParseQuery.getQuery("Challenge_User");
 		query.whereEqualTo("UserID", Beginscherm.userid);
 		query.findInBackground(new FindCallback<ParseObject>() {
@@ -323,8 +367,8 @@ public class ChallengeDetails extends Activity {
 			@Override
 			public void done(List<ParseObject> userList, ParseException e) {
 				if (e == null) {
-					if (userList.size() > 0) {
-						
+					if (userList.size() <= 0) {
+
 						ll.setVisibility(LinearLayout.VISIBLE);
 					}
 				} else {
@@ -332,28 +376,27 @@ public class ChallengeDetails extends Activity {
 				}
 			}
 		});
-		ImageButton accept = (ImageButton)findViewById(R.id.accept);
-		ImageButton decline = (ImageButton)findViewById(R.id.decline);
+		ImageButton accept = (ImageButton) findViewById(R.id.accept);
+		ImageButton decline = (ImageButton) findViewById(R.id.decline);
 		String challengeid = getIntent().getExtras().getString("challengeid");
-		accept.setOnClickListener(new myOnClickListener(true, challengeid,ll));
-		decline.setOnClickListener(new myOnClickListener(false, challengeid,ll));
-		
-		
+		accept.setOnClickListener(new myOnClickListener(true, challengeid, ll));
+		decline.setOnClickListener(new myOnClickListener(false, challengeid, ll));
+
 	}
 
 }
-class myOnClickListener implements View.OnClickListener
-{
+
+class myOnClickListener implements View.OnClickListener {
 	boolean accepted;
 	String challengeid;
 	View view;
-	
-	public myOnClickListener(boolean accepted, String challengeid, View view)
-	{
+
+	public myOnClickListener(boolean accepted, String challengeid, View view) {
 		this.accepted = accepted;
 		this.challengeid = challengeid;
 		this.view = view;
 	}
+
 	@Override
 	public void onClick(View v) {
 		ParseObject challenge = new ParseObject("Challenge_User");
@@ -367,10 +410,10 @@ class myOnClickListener implements View.OnClickListener
 			public void done(ParseException e) {
 				if (e == null) {
 					view.setVisibility(LinearLayout.INVISIBLE);
-				} 
+				}
 			}
 		});
-		
+
 	}
-	
+
 }
