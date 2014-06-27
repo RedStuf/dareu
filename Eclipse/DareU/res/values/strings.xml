@@ -24,5 +24,7 @@
         <item >Choose Video</item>
     </string-array>
     	<string name="menu_camera_label">Camera</string>
+    	<string name="error_opening_file">There was a problem with the selected file !</string>
+    	<string name="error_file_size_too_large">The selected file is to large! Select a new file</string>
 
 </resources>
