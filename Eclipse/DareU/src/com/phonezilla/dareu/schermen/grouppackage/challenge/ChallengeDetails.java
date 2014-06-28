@@ -232,7 +232,7 @@ public class ChallengeDetails extends Activity {
 				ByteArrayOutputStream stream1 = new ByteArrayOutputStream();
 				bp.compress(Bitmap.CompressFormat.PNG, 100, stream1);
 				byte[] image = stream1.toByteArray();
-				final ParseFile file = new ParseFile("androidbegin.png", image);
+				final ParseFile file = new ParseFile("image.png", image);
 				
 				file.saveInBackground(new SaveCallback() {
 
@@ -240,10 +240,6 @@ public class ChallengeDetails extends Activity {
 					public void done(ParseException e) {
 						if (e == null) {
 							setResult(RESULT_OK);
-							
-							
-							Toast.makeText(getApplicationContext(), "User added",
-									Toast.LENGTH_SHORT).show();
 						} else {
 							Toast.makeText(getApplicationContext(),
 									"Error saving: " + e.getMessage(),
@@ -251,13 +247,13 @@ public class ChallengeDetails extends Activity {
 						}
 					}
 				});
-				Thread.sleep(10000);
 				ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(
 						"Challenges");
 				 
 				ParseObject usergroup;
 				try {
 					usergroup = query.get(getIntent().getExtras().get("id").toString());
+					usergroup.remove("Proof");
 					usergroup.put("Proof", file);
 					ParseACL defaultACL = new ParseACL();
 					defaultACL.setPublicReadAccess(true);
@@ -272,9 +268,6 @@ public class ChallengeDetails extends Activity {
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} catch (InterruptedException e2) {
-				// TODO Auto-generated catch block
-				e2.printStackTrace();
 			}
 
 		} else if (resultCode != RESULT_CANCELED) {

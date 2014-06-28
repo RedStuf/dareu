@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.parse.FindCallback;
 import com.parse.LogInCallback;
 import com.parse.Parse;
+import com.parse.ParseACL;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -42,6 +43,21 @@ public class Beginscherm extends Activity {
 		setContentView(R.layout.activity_begin);
 		Parse.initialize(this, "jO1gEQOmHYCbpI9S05t2v4jfgAhnWglBTx4Tma8m",
 				"nylyg1NjpI5NcW4bOz74xNebQbEEDF9OctbTj5qI");
+		ParseUser.enableAutomaticUser();
+
+		/*
+		 * For more information on app security and Parse ACL:
+		 * https://www.parse.com/docs/android_guide#security-recommendations
+		 */
+		ParseACL defaultACL = new ParseACL();
+
+		/*
+		 * If you would like all objects to be private by default, remove this
+		 * line
+		 */
+		defaultACL.setPublicReadAccess(true);
+
+		ParseACL.setDefaultACL(defaultACL, true);
 		getActionBar().hide();
 		loginbutton = (Button) findViewById(R.id.loginbutton);
 		usernamefield = (EditText) findViewById(R.id.usernamefield);
