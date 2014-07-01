@@ -56,7 +56,7 @@ public class GroupPage extends FragmentActivity implements TabListener {
 	public GroupPage() {
 
 	}
-
+	// gewoon een random comment zodat ik hem bij git kan updaten
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
