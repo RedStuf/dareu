@@ -60,6 +60,7 @@ public class ChallengeDetails extends Activity {
 
 	public static final String TAG = ChallengeDetails.class.getSimpleName();
 	protected static final int PICK_PHOTO_REQUEST = 0;
+	private String challengeid;
 
 	ByteArrayOutputStream stream1 = new ByteArrayOutputStream();
 	Bitmap bp;
@@ -83,6 +84,8 @@ public class ChallengeDetails extends Activity {
 		 * line
 		 */
 		defaultACL.setPublicReadAccess(true);
+		
+		challengeid = getIntent().getExtras().get("id").toString();
 
 		ParseACL.setDefaultACL(defaultACL, true);
 		setContentView(R.layout.challenge_description);
@@ -90,14 +93,14 @@ public class ChallengeDetails extends Activity {
 		TextView challengename = (TextView) findViewById(R.id.challengeNameView);
 		TextView challengedescription = (TextView) findViewById(R.id.challengeDescriptionView);
 		Button viewproof = (Button) findViewById(R.id.previewEvedince_button);
+		
 		viewproof.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				ParseQuery<ParseObject> query = ParseQuery
 						.getQuery("Challenges");
-				query.whereEqualTo("objectId", getIntent().getExtras()
-						.get("id").toString());
+				query.whereEqualTo("objectId",challengeid );
 				query.findInBackground(new FindCallback<ParseObject>() {
 
 					@Override
@@ -113,19 +116,19 @@ public class ChallengeDetails extends Activity {
 								alert.setTitle("Proof");
 								ImageView view = new ImageView(
 										ChallengeDetails.this);
-								try {
-									stream = new ByteArrayInputStream(
-											((ParseFile) challenge
-													.get("Proof"))
-													.getData());
-								} catch (ParseException e1) {
-									// TODO Auto-generated catch block
-									e1.printStackTrace();
-								}
-								view.setImageBitmap(BitmapFactory
-										.decodeStream(stream));
-								
-								//view.setImageBitmap(bp);
+									ParseFile file = (ParseFile) challenge.get("Proof");
+									if(file != null)
+									{
+										try{
+											stream = new ByteArrayInputStream(file.getData());
+											view.setImageBitmap(BitmapFactory
+													.decodeStream(stream));
+										}catch(Exception ez){ez.printStackTrace();}
+									}
+									else 
+									{
+										view.setImageResource(R.drawable.noproof);
+									}
 								alert.setView(view);
 
 								alert.show();
@@ -140,7 +143,7 @@ public class ChallengeDetails extends Activity {
 			}
 		});
 		challengename.setText(getIntent().getExtras().get("name").toString());
-		// challengedescription.setText(getIntent().getExtras().get("description").toString());
+		challengedescription.setText(getIntent().getExtras().get("description").toString());
 		mDialogListener = new DialogInterface.OnClickListener() {
 
 			@Override
@@ -332,6 +335,8 @@ public class ChallengeDetails extends Activity {
 
 		ParseQuery<ParseObject> query = ParseQuery.getQuery("Challenge_User");
 		query.whereEqualTo("UserID", Beginscherm.userid);
+		query.whereEqualTo("ChallengeID", challengeid);
+		
 		query.findInBackground(new FindCallback<ParseObject>() {
 
 			@Override

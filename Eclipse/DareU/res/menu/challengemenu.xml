@@ -4,6 +4,6 @@
         android:id="@+id/refresh"
         android:icon="@drawable/refresh"
         android:showAsAction="always"/>
-    <item android:id="@+id/adduser" android:title="+ Add User"></item>
+    <item android:id="@+id/adduser" android:title="+ Add User" android:visible="false"></item>
     <item android:id="@+id/users" android:title="Show Users"></item>
 </menu>

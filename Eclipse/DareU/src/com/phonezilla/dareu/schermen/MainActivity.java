@@ -1,10 +1,8 @@
 package com.phonezilla.dareu.schermen;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Timer;
-import java.util.TimerTask;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -12,6 +10,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.text.InputFilter;
 import android.util.Log;
@@ -29,23 +28,24 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.parse.FindCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
-import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 import com.phonezilla.dareu.Beginscherm;
+import com.phonezilla.dareu.LoadingScreen;
 import com.phonezilla.dareu.R;
+import com.phonezilla.dareu.objects.Collection;
+import com.phonezilla.dareu.objects.Group;
 import com.phonezilla.dareu.schermen.grouppackage.GroupPage;
 
 public class MainActivity extends FragmentActivity {
 
-	public static List<ParseObject> groups = new ArrayList<ParseObject>();
+	public static ArrayList<Collection> groups = new ArrayList<Collection>();
+	public static ArrayList<Collection> users = new ArrayList<Collection>();
 	public static final int GROUPLAYOUTHEIGHT = 100;
 	public static final int MAXLETTERS = 20;
+	public static final int REFRESHTIME = 4000;
 	String tempid;
-	private ArrayList<String> groupsOfUser;
 	ListView ListView;
 	Context context;
 	Timer timer;
@@ -53,7 +53,6 @@ public class MainActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_group);
-		groupsOfUser = new ArrayList<String>();
 		Button button1 = (Button) findViewById(R.id.button1);
 		context = this;
 		button1.setOnClickListener(new View.OnClickListener() {
@@ -62,14 +61,51 @@ public class MainActivity extends FragmentActivity {
 				makeGroup();
 			}
 		});
-		getGroups();
+		final Handler handler = new Handler();
+		Runnable r = new Runnable() {
+			
+			@Override
+			public void run() {
+				//update();
+				handler.postDelayed(this, 10000);
+			}
+		};
+		handler.post(r);
+		final Handler handler2 = new Handler();
+		Runnable r2 = new Runnable() {
+			
+			@Override
+			public void run() {
+				getGroups();
+				handler2.postDelayed(this, MainActivity.REFRESHTIME);
+			}
+		};
+		handler2.postDelayed(r2, 1000);
+	}
+	public void update()
+	{
+		try{
+			LoadingScreen.loadUsers();
+			LoadingScreen.loadGroups();
+			Thread.sleep(3000);
+			LoadingScreen.loadAcceptedChallenges();
+			LoadingScreen.loadPendingChallenges();
+			Thread.sleep(3000);
+			Log.d("updated", users.size()+" updated");
+			Log.d("updated", groups.size()+"updated");
+			for(Collection group : groups)
+			{
+				Log.d("updated",group.itemName + " = "	+((Group)group).getAccepted().size()+"accep");
+				Log.d("updated",group.itemName + " = "	+((Group)group).getPending().size()+"pend");
+			}
+			}catch(Exception e){e.printStackTrace();}
 	}
 
 	public void makeGroup() {
 		AlertDialog.Builder alert = new AlertDialog.Builder(context);
 
-		alert.setTitle("Maak een groep");
-		alert.setMessage("Voer een groepsnaam in");
+		alert.setTitle("Create a poule");
+		alert.setMessage("Insert a name");
 
 		// Set an EditText view to get user input
 		final EditText input = new EditText(context);
@@ -141,56 +177,13 @@ public class MainActivity extends FragmentActivity {
 		if (layout != null) {
 			layout.removeAllViews();
 		}
-		ParseQuery<ParseObject> query = ParseQuery.getQuery("User_Groups");
-		query.whereEqualTo("UserID", Beginscherm.userid);
-
-		query.findInBackground(new FindCallback<ParseObject>() {
-
-			@Override
-			public void done(List<ParseObject> groupList, ParseException e) {
-				if (e == null) {
-					for (ParseObject group : groupList) {
-						ParseQuery<ParseObject> query = ParseQuery
-								.getQuery("Groups");
-						query.whereEqualTo("objectId", group.get("GroupID")
-								.toString());
-						query.findInBackground(new FindCallback<ParseObject>() {
-
-							@Override
-							public void done(List<ParseObject> groupList,
-									ParseException e) {
-								if (e == null) {
-									for (ParseObject group : groupList) {
-										groupsOfUser.add(group
-												.getString("GroupName"));
-										addGroup(group.getString("GroupName"),
-												group.getObjectId());
-										Log.d("groep",
-												group.getString("GroupName")
-														+ " is toegevoegd en id = "
-														+ group.getObjectId());
-									}
-								} else {
-									Log.d("Post retrieval",
-											"Error: " + e.getMessage());
-								}
-								Log.d("groep",
-										Arrays.toString(groupList.toArray())
-												+ " is toegevoegd");
-							}
-						});
-					}
-				} else {
-					Log.d("Post retrieval", "Error: " + e.getMessage());
-				}
-				Log.d("groep", Arrays.toString(groupList.toArray())
-						+ " is toegevoegd");
-			}
-		});
-
+		for(Collection group : MainActivity.groups)
+		{
+			addGroup(group);
+		}
 	}
 
-	public void addGroup(String name, String groupid) {
+	public void addGroup(Collection group ) {
 
 		LinearLayout ll = new LinearLayout(context);
 		LinearLayout ll1 = new LinearLayout(context);
@@ -211,7 +204,7 @@ public class MainActivity extends FragmentActivity {
 
 		ll2.setOrientation(LinearLayout.VERTICAL);
 		t1.setTextColor(Color.WHITE);
-		t1.setText(name);
+		t1.setText(group.itemName);
 		t2.setText("description");
 
 		image.setImageDrawable(image.getResources().getDrawable(
@@ -227,7 +220,7 @@ public class MainActivity extends FragmentActivity {
 		ll.addView(ll1);
 		ll.addView(ll2);
 
-		ll.setOnClickListener(new KlikLuisteraar(groupid));
+		ll.setOnClickListener(new KlikLuisteraar(group));
 		LinearLayout layout = (LinearLayout) findViewById(R.id.grouplayout);
 		ll.setMinimumWidth(layout.getWidth());
 		if (layout != null)
@@ -247,7 +240,7 @@ public class MainActivity extends FragmentActivity {
 		switch (item.getItemId()) {
 		
 		case R.id.refresh:
-			getGroups();
+			update();
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
@@ -256,18 +249,18 @@ public class MainActivity extends FragmentActivity {
 }
 
 class KlikLuisteraar implements OnClickListener {
-	String groupid;
+	Collection group;
 
-	public KlikLuisteraar(String groupid_) {
-		this.groupid = groupid_;
+	public KlikLuisteraar(Collection group_) {
+		this.group = group_;
 	}
 
 	@Override
 	public void onClick(View v) {
 		Context context = v.getContext();
 		Intent intent = new Intent(context, GroupPage.class);
-		Log.d("sda", groupid + "");
-		intent.putExtra("groupid", groupid);
+		Log.d("sda", group + "");
+		intent.putExtra("group", group);
 		context.startActivity(intent);
 
 	}

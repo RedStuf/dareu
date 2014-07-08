@@ -6,6 +6,7 @@ import java.util.Timer;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,7 +24,10 @@ import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.phonezilla.dareu.LoadingScreen;
 import com.phonezilla.dareu.R;
+import com.phonezilla.dareu.objects.Collection;
+import com.phonezilla.dareu.objects.Group;
 import com.phonezilla.dareu.schermen.MainActivity;
 import com.phonezilla.dareu.schermen.grouppackage.GroupPage;
 import com.phonezilla.dareu.schermen.grouppackage.challenge.ChallengeDetails;
@@ -31,6 +35,7 @@ import com.phonezilla.dareu.schermen.grouppackage.challenge.ChallengeDetails;
 public class Accepted extends Fragment {
 
 	private View view;
+	private Group group;
 	Context context;
 	LinearLayout layout;
 	Timer timer;
@@ -41,7 +46,9 @@ public class Accepted extends Fragment {
 
 		view = inflater.inflate(R.layout.fragment_accepted, container, false);
 		context = getActivity();
+		group = (Group)getActivity().getIntent().getSerializableExtra("group");
 		layout = (LinearLayout) view.findViewById(R.id.challenges);
+		setHasOptionsMenu(true);
 		Button button1 = (Button) view.findViewById(R.id.button1);
 		button1.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -50,8 +57,31 @@ public class Accepted extends Fragment {
 			}
 		});
 		setHasOptionsMenu(true);
-		getChallenges();
+		final Handler handler = new Handler();
+		Runnable r = new Runnable() {
+			
+			@Override
+			public void run() {
+				LoadingScreen.loadAcceptedChallenges();
+				getChallenges();
+				Log.d("accepted begin", group.getAccepted().size()+"");
+				Log.d("pending  begin", group.getPending().size()+"");
+				handler.postDelayed(this, MainActivity.REFRESHTIME);
+			}
+		};
+		handler.postDelayed(r, 1000);
 		return view;
+	}
+	public void update()
+	{
+		try{
+			LoadingScreen.loadUsers();
+			LoadingScreen.loadGroups();
+			Thread.sleep(3000);
+			LoadingScreen.loadAcceptedChallenges();
+			LoadingScreen.loadPendingChallenges();
+			Thread.sleep(3000);
+			}catch(Exception e){e.printStackTrace();}
 	}
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 	    super.onCreateOptionsMenu(menu, inflater);
@@ -61,12 +91,13 @@ public class Accepted extends Fragment {
 		switch (item.getItemId()) {
 		
 		case R.id.refresh:
-			getChallenges();
+			update();
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
 	}
+	
 	public void makeChallenge() {
 		
 		((GroupPage)getActivity()).makeChallenge();
@@ -75,8 +106,13 @@ public class Accepted extends Fragment {
 	
 	public void getChallenges() {
 		layout.removeAllViews();
+		for(Collection challenge : group.getAccepted())
+		{
+			addChallenge(challenge.itemId,challenge.itemName,challenge.itemdesc);
+		}
+		/*
 		ParseQuery<ParseObject> query = ParseQuery.getQuery("Challenges");
-		query.whereEqualTo("GroupId", ((GroupPage) getActivity()).groupid);
+		query.whereEqualTo("GroupId", group.itemId);
 		query.findInBackground(new FindCallback<ParseObject>() {
 
 			@Override
@@ -94,7 +130,7 @@ public class Accepted extends Fragment {
 								public void done(List<ParseObject> userList,
 										ParseException e) {
 									if (e == null && GroupPage.currentUsers.size() <= (userList.size() / 2)) {
-										addChallenge(challenge.getString("ChallengeName"),challenge.getString("Description"),challenge.getObjectId());
+										addChallenge(challenge.getObjectId(),challenge.getString("ChallengeName"),challenge.getString("Description"));
 
 									}
 								}
@@ -105,10 +141,10 @@ public class Accepted extends Fragment {
 					Log.d("Post retrieval", "Error: " + e.getMessage());
 				}
 			}
-		});
+		});*/
 	}
 
-	private void addChallenge(final String name,final String description,final String id) {
+	private void addChallenge(final String id,final String name,final String description) {
 
 		LinearLayout ll = new LinearLayout(context);
 		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(

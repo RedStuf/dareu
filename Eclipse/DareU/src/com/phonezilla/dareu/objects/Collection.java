@@ -1,6 +1,8 @@
 package com.phonezilla.dareu.objects;
 
-public class Collection {
+import java.io.Serializable;
+
+public class Collection implements Serializable {
 	public String itemId;
 	public String itemName;
 	public String itemdesc;

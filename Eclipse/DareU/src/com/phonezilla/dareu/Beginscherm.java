@@ -21,9 +21,6 @@ import com.parse.ParseACL;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
-import com.phonezilla.dareu.objects.User;
-import com.phonezilla.dareu.schermen.MainActivity;
-import com.phonezilla.dareu.schermen.grouppackage.GroupPage;
 
 public class Beginscherm extends Activity {
 
@@ -108,9 +105,9 @@ public class Beginscherm extends Activity {
 								} else {
 									alertDialog = new AlertDialog.Builder(
 											Beginscherm.this);
-									alertDialog.setTitle("Account creater");
+									alertDialog.setTitle("Account creator");
 									alertDialog
-											.setMessage("This account doesnt exist yet.Do you want to create a new Account?");
+											.setMessage("This account doesn't exist yet.Do you want to create a new Account?");
 									alertDialog
 											.setPositiveButton(
 													"Ok",
@@ -152,26 +149,9 @@ public class Beginscherm extends Activity {
 
 	public void nextActivity() {
 		username = userName;
-		ParseQuery<ParseUser> query = ParseUser.getQuery();
+		
 
-		query.findInBackground(new FindCallback<ParseUser>() {
-
-			@Override
-			public void done(List<ParseUser> userList, ParseException e) {
-				if (e == null) {
-					for (ParseUser user : userList) {
-						GroupPage.users.add(new User(user.getObjectId()
-								.toString(), user.get("username").toString(),
-								null));
-					}
-
-				} else {
-					Log.d("Post retrieval", "Error: " + e.getMessage());
-				}
-			}
-		});
-
-		Intent intent = new Intent(context, MainActivity.class);
+		Intent intent = new Intent(context, LoadingScreen.class);
 		startActivity(intent);
 		finish();
 	}
@@ -183,6 +163,7 @@ public class Beginscherm extends Activity {
 		try {
 			user.signUp();
 			userid = user.getObjectId();
+			ParseUser.logIn(userName, passWord);
 			nextActivity();
 		} catch (ParseException e1) {
 			e1.printStackTrace();
